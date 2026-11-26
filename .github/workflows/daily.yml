@@ -38,7 +38,7 @@ jobs:
           GROQ_API_KEY_1: ${{ secrets.GROQ_API_KEY_1 }}
         run: node src/script.mjs
 
-      -       - name: Design props (Groq, 3 passes with 3 keys - create, enhance, polish)
+      - name: Design props (Groq, 3 passes with 3 keys - create, enhance, polish)
         env:
           GROQ_API_KEY_1: ${{ secrets.GROQ_API_KEY_1 }}
           GROQ_API_KEY_2: ${{ secrets.GROQ_API_KEY_2 }}
