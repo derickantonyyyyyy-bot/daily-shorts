@@ -38,7 +38,7 @@ const FORMAT = `Shapes and size arrays: box [width, height, depth]; sphere [radi
 Reply with JSON only: {"parts":[{"shape":"box","size":[0.1,0.1,0.1],"pos":[0,0.05,0],"rot":[0,0,0],"color":"#aa5533"}]}`;
 
 function promptFor(pass, def, parts) {
-  const who = `Object: ${def.name}. Its role in the scene: ${def.purpose}. Setting: ${script.setting.name}. ${
+  const who = `Object: ${def.name}. Its role in the scene: ${def.purpose}. Setting: ${script.setting.name}.${def.material ? ` Main material: ${def.material.replace(/_/g, ' ')}.` : ''} ${
     def.holdable ? 'It is HOLDABLE, so keep it under 0.4 m in every dimension.' : 'It is fixed scenery.'
   }`;
   if (pass === 0) {
@@ -88,7 +88,7 @@ if (script.props.length) {
     console.warn('No GROQ_API_KEY_1 / GROQ_API_KEY set, using placeholder props.');
   } else {
     await Promise.all(
-      script.props.map(async (p) => {
+      script.props.filter((p) => !p.parts).map(async (p) => { // props with preset parts (set dressing) are kept as they are
         const r = await designOne(p);
         trails[p.id] = r.trail.join(' > ');
         if (r.parts) designed[p.id] = r.parts;
@@ -99,10 +99,10 @@ if (script.props.length) {
 
 const props = script.props.map((p) => ({
   ...p,
-  parts: designed[p.id] || [
-    { shape: 'box', size: [p.holdable ? 0.12 : 0.6, p.holdable ? 0.16 : 0.8, p.holdable ? 0.12 : 0.6], pos: [0, p.holdable ? 0.08 : 0.4, 0], rot: [0, 0, 0], color: '#8a7f6a' },
+  parts: p.parts || designed[p.id] || [
+    { shape: 'box', size: [p.holdable ? 0.12 : 0.6, p.holdable ? 0.16 : 0.8, p.holdable ? 0.12 : 0.6], pos: [0, p.holdable ? 0.08 : 0.4, 0], rot: [0, 0, 0], color: p.color || '#8a7f6a' },
   ],
-  designedBy: designed[p.id] ? 'groq' : 'placeholder',
+  designedBy: p.parts ? 'preset' : designed[p.id] ? 'groq' : 'placeholder',
 }));
 
 fs.writeFileSync('work/props.json', JSON.stringify({ props }, null, 2));

@@ -2,9 +2,9 @@
 
 Every day at **3:30 PM IST** (cron `0 10 * * *` UTC), GitHub Actions will:
 
-1. **Claude directs** (or Groq, if there is no Anthropic key): a real, lesser-known fact in that weekday's lane, two characters with a relationship and a stake, a setting, 3-5 purposeful props, and per-beat staging (poses, eye lines, who holds what, camera focus, sound effects)
+1. **Claude directs** (or Groq, if there is no Anthropic key) in the **10-scene blueprint format** (one sentence per scene; every scene picks a place, anchor and camera from a fixed directory in `src/blueprint.mjs`, so objects never float; set `SCRIPT_FORMAT=classic` for the older two-character format). The older description follows: a real, lesser-known fact in that weekday's lane, two characters with a relationship and a stake, a setting, 3-5 purposeful props, and per-beat staging (poses, eye lines, who holds what, camera focus, sound effects)
 2. **Groq models the props** as 3D primitives (box, sphere, cylinder, cone, capsule) in three passes with three keys: create (up to 10 parts), enhance (up to 16, fixes proportions and missing defining features), polish (up to 24, detail, wear, material variety). A failed pass keeps the previous result
-3. **edge-tts narrates** in a deep, normal-sounding voice (`en-US-GuyNeural`, pitch -14Hz, plus bass boost)
+3. **edge-tts narrates one line per scene** (`src/voice.mjs`): deep voice (`en-US-GuyNeural`, pitch -14Hz), irregular micro-pauses (longer after questions), soft breaths between some lines, warm EQ (boost around 170 Hz, softened highs) and a very quiet room-tone bed. Exact line timings drive the camera cuts
 4. **ElevenLabs makes sound effects only**, mixed in at each beat's start
 5. **Three.js renders** 1080x1920: stiff mannequins, stepped robotic easing, eye lines toward the action, held objects that drag posture by weight, camera focus and layered foreground/midground/background
 6. Encodes the MP4, publishes it as a **GitHub Release**, commits the script to `archive/`, uploads to YouTube as a Short
@@ -70,8 +70,12 @@ Extras: **speed ramp** (`ramp`: normal, ~10% speed at the moment of danger, catc
 
 ## Tuning
 
+- **Human-sounding text:** rules in `src/human.mjs` (`HUMAN_RULES` go into both prompts; `scrub()` swaps words like delve/crucial/moreover and removes em dashes). Narration is 5-14 words per line (most 8-12, at least two short ones) so the rhythm varies.
+- **Places and sets:** `PLACES` in `src/blueprint.mjs` (anchor coordinates, wall/floor colours, furniture parts, allowed cameras). A camera name maps to a renderer shot in `shotFor()`.
+- **Voice:** `TTS_VOICE`, `TTS_PITCH` (try -20Hz), `TTS_RATE` env vars, or the filter chain in `src/voice.mjs`.
+
 - Weekday lanes (body, engineering failures, odd history, animals, everyday physics, food chemistry, geology/space): `THEMES` in `src/script.mjs`.
-- Models: env vars `CLAUDE_MODEL`, `GROQ_MODEL` (default `llama-3.3-70b-versatile`), `SCRIPT_PROVIDER=groq` to force Groq for scripts.
+- Models: env vars `CLAUDE_MODEL`, `GROQ_MODEL`, `SCRIPT_PROVIDER=groq` to force Groq for scripts. Groq tries `openai/gpt-oss-120b`, `llama-3.3-70b-versatile`, `openai/gpt-oss-20b`, `llama-3.1-8b-instant` in order and keeps the first one your key can use (orgs can block models, which gives a 404 model_not_found).
 - ElevenLabs credits: at most 6 effects per video, each with an explicit 0.5-3 s duration.
 - The mannequin cannot do cloth creasing or finger-level grips. Weight is shown through arm drag, lean and sag.
 

@@ -63,6 +63,8 @@ export async function groq(prompt, { max = 3500, temperature = 0.7, key = proces
   }
   throw lastErr;
 }
+
+// Script writer: Claude if available, otherwise Groq.
 export async function director(prompt, opts) {
   const provider = process.env.SCRIPT_PROVIDER || (process.env.ANTHROPIC_API_KEY ? 'claude' : 'groq');
   return provider === 'claude' ? claude(prompt, opts) : groq(prompt, opts);

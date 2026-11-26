@@ -38,6 +38,7 @@ wall.position.set(0, 8, -5);
 scene.add(wall);
 const floorBase = new THREE.Color(0xd8dde2);
 const wallBase = new THREE.Color(0xaebfcc);
+const tmpWall = new THREE.Color(), tmpFloor = new THREE.Color(); // per-scene colours for blueprint places
 
 // ---------- Helpers ----------
 const V = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
@@ -271,10 +272,17 @@ function buildProps(list) {
 }
 
 // Flight path of a thrown / dropped object (mp 0..1). Shared by the prop placer and the projectile-POV camera.
-const motionEnd = (m) => V(chars[m.to].x, PART_Y[m.part] || 1.1, 0.3);
+// m.at = a fixed floor/world point (blueprint scenes without a dummy); m.from = where the object starts (its anchor).
+const motionEnd = (m) => {
+  if (m.at) return V(m.at.x, m.at.y, m.at.z);
+  const c = chars[m.to].yawG.position;
+  return V(c.x, (c.y || 0) + (PART_Y[m.part] || 1.1), c.z + 0.3);
+};
 function motionPos(pr, m, mp) {
   const end = motionEnd(m);
-  const start = m.style === 'drop' ? V(end.x, 4.2, end.z) : pr.home.clone().setY(pr.home.y + 0.6);
+  const start = m.style === 'drop'
+    ? V(end.x, m.from ? Math.max(m.from.y, 2.5) : 4.2, end.z)
+    : (m.from ? V(m.from.x, m.from.y + 0.6, m.from.z) : pr.home.clone().setY(pr.home.y + 0.6));
   const pos = start.clone().lerp(end, m.style === 'drop' ? mp * mp : mp);
   if (m.style === 'fly') pos.y += Math.sin(mp * Math.PI) * 0.5;
   return pos;
@@ -635,7 +643,10 @@ function render(t) {
       spin = local * 2.5;
     }
 
-    c.yawG.position.set(c.x, 0, travel(who, i, local) * (1 - loopK));
+    const cl = beat.charLayout && beat.charLayout[who]; // blueprint scenes place and show/hide each dummy per scene
+    c.yawG.visible = cl ? cl.visible !== false : true;
+    if (cl) c.yawG.position.set(cl.x ?? c.x, cl.y ?? 0, cl.z ?? 0);
+    else c.yawG.position.set(c.x, 0, travel(who, i, local) * (1 - loopK));
     c.yawG.rotation.y = c.baseYaw * (1 - clamp(v.face, 0, 1)) + spin;
     c.torso.rotation.set(v.tx, 0, v.tz);
     c.torso.scale.y = 1 + breath * 0.01;
@@ -661,14 +672,16 @@ function render(t) {
   const xrWho = beat.shotTarget === 'B' ? 'B' : 'A';
   const bodyShot = beat.shot === 'xray' || beat.shot === 'cutaway';
   const hl = beat.highlight || (bodyShot ? { who: xrWho, part: beat.shotPart || 'chest', color: 'red' } : null);
+  const lay = beat.layout; // blueprint scenes: only the objects listed for this scene exist, at their anchors
   for (const [id, pr] of Object.entries(props)) {
     const g = pr.group;
     let mo = null;
-    for (let j = i; j >= 0; j--) {
+    for (let j = i; j >= (lay ? i : 0); j--) {
       const m = beats[j].motion;
       if (m && m.prop === id) { mo = { m, j }; break; }
     }
     const holder = beat.holdA === id ? 'A' : beat.holdB === id ? 'B' : null;
+    g.visible = !lay || Boolean(lay[id]) || Boolean(mo) || Boolean(holder);
     if (mo) {
       if (g.parent !== scene) scene.add(g);
       g.quaternion.identity();
@@ -697,9 +710,10 @@ function render(t) {
       g.quaternion.identity();
       g.scale.setScalar(1);
       if (holder) g.position.set(chars[holder].x + 0.6, 0, 0.5); // dropped when the holder goes down
+      else if (lay && lay[id]) g.position.set(lay[id].x, lay[id].y || 0, lay[id].z);
       else g.position.copy(pr.home);
     }
-    if (loopK > 0 && g.parent === scene) g.position.lerp(pr.home, loopK);
+    if (loopK > 0 && !lay && g.parent === scene) g.position.lerp(pr.home, loopK);
   }
   scene.updateMatrixWorld(true);
 
@@ -764,11 +778,11 @@ function render(t) {
   // 5) mood tint + desaturation (everything goes grey except the glowing hazard)
   const names = [state.A.name, state.B.name];
   const mood = MOOD_PRIORITY.find((m) => names.includes(m)) || 'calm';
-  bg.copy(wallBase).lerp(new THREE.Color(MOOD[mood]), mood === 'calm' ? 0 : 0.35);
+  bg.copy(beat.wall ? tmpWall.set(beat.wall) : wallBase).lerp(new THREE.Color(MOOD[mood]), mood === 'calm' ? 0 : 0.35);
   const d = hl ? sm(0, 0.2, local) * 0.85 : 0;
   desaturate(bg, d);
   wallMat.color.copy(bg);
-  floorMat.color.copy(floorBase);
+  floorMat.color.copy(beat.floor ? tmpFloor.set(beat.floor) : floorBase);
   desaturate(floorMat.color, d);
   scene.fog.color.copy(bg);
   for (const e of reg) {
@@ -791,6 +805,7 @@ function render(t) {
     const after = local - impactP(beat) * dur;
     if (after >= 0 && after < frames(5)) shake = Math.max(shake, 0.06);
   }
+  if (beat.shake) shake = Math.max(shake, beat.shake); // scene-wide rumble (blueprint "shake_violent")
   const fr = Math.round(t * FPS);
   const jitter = V(hash(fr) - 0.5, hash(fr + 7.3) - 0.5, hash(fr + 13.9) - 0.5).multiplyScalar(2 * shake);
 

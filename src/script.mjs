@@ -2,6 +2,13 @@
 // a setting, a few purposeful props, and per-beat staging (poses, eye lines, who holds what, camera focus, SFX).
 import fs from 'node:fs';
 import { director, parseJson } from './llm.mjs';
+import { HUMAN_RULES, scrub } from './human.mjs';
+
+// Default format: the 10-scene blueprint (src/script_blueprint.mjs). Set SCRIPT_FORMAT=classic for the two-character director below.
+if ((process.env.SCRIPT_FORMAT || 'blueprint') === 'blueprint') {
+  await import('./script_blueprint.mjs');
+  process.exit(0);
+}
 
 const POSES = ['calm', 'walk', 'curious', 'confusion', 'fear', 'shock', 'pain', 'collapse', 'run'];
 const SHOTS = ['wide', 'suspense', 'hazard_ecu', 'impact_closeup', 'ots', 'crash_zoom', 'xray', 'cutaway', 'snorricam',
@@ -109,6 +116,8 @@ Motion: to have an object hit someone, set "motion": {"prop":"<holdable or fixed
 Highlight: "highlight": {"prop":"<id>","color":"red|orange|green"} or {"who":"A"|"B","part":"chest","color":"red"} makes the hazard or injured part glow against a desaturated scene. Use on the key beats; xray beats auto-highlight their part.
 Loop: the LAST beat should return characters and camera to the opening look (calm poses, same shot, nothing held) so the Short loops seamlessly. The FIRST beat should start calm with nothing held.
 
+${HUMAN_RULES}
+
 OUTPUT: JSON only, no code fences, in exactly this shape (replace values):
 ${example}
 
@@ -192,7 +201,7 @@ s.beats = (s.beats || [])
       else fixed.shot = 'wide';
     }
     return {
-      text: b.text.trim(),
+      text: scrub(b.text.trim()),
       action: String(b.action || ''),
       poseA: POSES.includes(b.poseA) ? b.poseA : 'calm',
       poseB: POSES.includes(b.poseB) ? b.poseB : 'calm',

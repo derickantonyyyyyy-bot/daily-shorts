@@ -36,7 +36,7 @@ if (key) {
 }
 
 if (!clips.length) {
-  fs.copyFileSync('work/voice.mp3', 'work/final.mp3');
+  fs.copyFileSync('work/voice.mp3', 'work/mix.mp3');
 } else {
   const args = ['-y', '-i', 'work/voice.mp3'];
   clips.forEach((c) => args.push('-i', c.file));
@@ -46,7 +46,9 @@ if (!clips.length) {
   });
   const labels = ['[0:a]', ...clips.map((_, n) => `[s${n}]`)].join('');
   const filter = `${delays.join(';')};${labels}amix=inputs=${clips.length + 1}:duration=longest:normalize=0[out]`;
-  args.push('-filter_complex', filter, '-map', '[out]', '-t', String(plan.duration), 'work/final.mp3');
+  args.push('-filter_complex', filter, '-map', '[out]', 'work/mix.mp3');
   execFileSync('ffmpeg', args, { stdio: 'inherit' });
 }
+// Pad with silence to the full video length so the closing hold is not cut off by -shortest at encode time.
+execFileSync('ffmpeg', ['-y', '-i', 'work/mix.mp3', '-af', 'apad', '-t', String(plan.duration), 'work/final.mp3'], { stdio: 'ignore' });
 console.log('Audio ready: work/final.mp3');
