@@ -1,0 +1,272 @@
+{
+  "title": "Seahorse Squeeze",
+  "description": "A deadpan narrator reveals the shocking reality of male seahorse pregnancy while two stiff mannequins act it out in a cramped aquarium lab.",
+  "tags": [
+    "animal biology",
+    "seahorse",
+    "male pregnancy",
+    "edutainment",
+    "short loop"
+  ],
+  "characters": {
+    "A": {
+      "name": "Maya",
+      "role": "night‑shift nurse",
+      "attitude": "tired, sarcastic"
+    },
+    "B": {
+      "name": "Leo",
+      "role": "new intern",
+      "attitude": "overconfident, fidgety"
+    }
+  },
+  "relationship": "Maya doubts Leo's competence; they must prove the lab's claim about seahorses.",
+  "setting": {
+    "name": "aquarium research lab",
+    "wall": "#c9d6d3",
+    "floor": "#9aa5a3"
+  },
+  "props": [
+    {
+      "id": "glass_tank",
+      "name": "transparent glass tank",
+      "purpose": "holds the seahorse pair",
+      "layer": "foreground",
+      "x": 0,
+      "holdable": false,
+      "weight": 0
+    },
+    {
+      "id": "coral_rock",
+      "name": "small coral rock",
+      "purpose": "seahorse perches on it",
+      "layer": "midground",
+      "x": -0.5,
+      "holdable": false,
+      "weight": 0
+    },
+    {
+      "id": "vial",
+      "name": "glass vial of fertilized eggs",
+      "purpose": "Leo examines the brood pouch contents",
+      "layer": "midground",
+      "x": 0.6,
+      "holdable": true,
+      "weight": 0.2
+    }
+  ],
+  "beats": [
+    {
+      "text": "Did you know male seahorses actually give birth?",
+      "action": "A leans against glass_tank, B stands beside it.",
+      "poseA": "calm",
+      "poseB": "curious",
+      "lookA": "B",
+      "lookB": "glass_tank",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "A",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null
+    },
+    {
+      "text": "The male carries embryos in a pouch like a marsupial.",
+      "action": "B points at coral_rock, gesturing toward the male seahorse.",
+      "poseA": "calm",
+      "poseB": "curious",
+      "lookA": "B",
+      "lookB": "coral_rock",
+      "holdA": null,
+      "holdB": null,
+      "focus": "B",
+      "shot": "suspense",
+      "shotTarget": "B",
+      "shotTo": null,
+      "shotPart": "head",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": {
+        "text": "soft bubbling",
+        "seconds": 1
+      }
+    },
+    {
+      "text": "Each pouch can hold up to 1,500 tiny eggs.",
+      "action": "A slides her hand along glass_tank, tracing the seahorse.",
+      "poseA": "calm",
+      "poseB": "curious",
+      "lookA": "glass_tank",
+      "lookB": null,
+      "holdA": null,
+      "holdB": null,
+      "focus": "glass_tank",
+      "shot": "hazard_ecu",
+      "shotTarget": "glass_tank",
+      "shotTo": "A",
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null
+    },
+    {
+      "text": "When ready, the male contracts his pouch muscles.",
+      "action": "B grips vial, ready to collect the released fry.",
+      "poseA": "calm",
+      "poseB": "confusion",
+      "lookA": null,
+      "lookB": "vial",
+      "holdA": null,
+      "holdB": "vial",
+      "focus": "B",
+      "shot": "ots",
+      "shotTarget": "vial",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "B",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": {
+        "text": "click of vial cap",
+        "seconds": 0.7
+      }
+    },
+    {
+      "text": "The pouch opens, and hundreds of miniature fry surge out.",
+      "action": "A watches as a stream of tiny fry flies toward the vial.",
+      "poseA": "shock",
+      "poseB": "shock",
+      "lookA": "glass_tank",
+      "lookB": "glass_tank",
+      "holdA": null,
+      "holdB": "vial",
+      "focus": "both",
+      "shot": "impact_closeup",
+      "shotTarget": "vial",
+      "shotTo": "B",
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": true,
+      "motion": {
+        "prop": "vial",
+        "to": "B",
+        "part": "chest",
+        "style": "fly"
+      },
+      "highlight": {
+        "prop": "vial",
+        "who": null,
+        "part": "chest",
+        "color": "orange"
+      },
+      "sfx": {
+        "text": "soft splash of water",
+        "seconds": 1.2
+      }
+    },
+    {
+      "text": "The male’s muscles relax, his belly looks empty again.",
+      "action": "A touches her own chest, mimicking the seahorse’s relief.",
+      "poseA": "calm",
+      "poseB": "shock",
+      "lookA": null,
+      "lookB": null,
+      "holdA": null,
+      "holdB": "vial",
+      "focus": "A",
+      "shot": "xray",
+      "shotTarget": "A",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": {
+        "prop": null,
+        "who": "A",
+        "part": "chest",
+        "color": "red"
+      },
+      "sfx": null
+    },
+    {
+      "text": "Leo records the count: exactly 1,483 fry survived.",
+      "action": "B scribbles numbers on a notepad, still holding the vial.",
+      "poseA": "calm",
+      "poseB": "walk",
+      "lookA": null,
+      "lookB": "camera",
+      "holdA": null,
+      "holdB": "vial",
+      "focus": "B",
+      "shot": "crash_zoom",
+      "shotTarget": "B",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": {
+        "text": "pen scribble",
+        "seconds": 0.5
+      }
+    },
+    {
+      "text": "Maya smirks, impressed despite her doubts about the claim.",
+      "action": "A leans back, arms crossed, eyes on B.",
+      "poseA": "calm",
+      "poseB": "walk",
+      "lookA": "B",
+      "lookB": "A",
+      "holdA": null,
+      "holdB": "vial",
+      "focus": "both",
+      "shot": "orbit",
+      "shotTarget": "glass_tank",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": {
+        "prop": "glass_tank",
+        "to": "A",
+        "part": "head",
+        "style": "drop"
+      },
+      "highlight": null,
+      "sfx": null
+    },
+    {
+      "text": "The loop resets: the tank glistens, the duo returns to quiet observation.",
+      "action": "Both drop the vial, return to original calm stances.",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "B",
+      "lookB": "A",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "A",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null
+    }
+  ]
+}
