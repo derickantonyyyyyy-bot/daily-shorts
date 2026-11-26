@@ -1,0 +1,10 @@
+{
+  "name": "daily-shorts",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "googleapis": "^144.0.0",
+    "puppeteer": "^23.0.0",
+    "three": "^0.170.0"
+  }
+}

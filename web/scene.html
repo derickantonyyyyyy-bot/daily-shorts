@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080" />
+  <style>
+    html, body { margin: 0; background: #111; overflow: hidden; }
+    canvas { display: block; }
+    #cap {
+      position: absolute; left: 6%; right: 6%; bottom: 13%;
+      text-align: center;
+      font: 900 66px/1.15 "Liberation Sans", "DejaVu Sans", Arial, sans-serif;
+      color: #fff; text-transform: uppercase;
+      -webkit-text-stroke: 10px #000; paint-order: stroke fill;
+    }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "/three/build/three.module.js" } }
+  </script>
+</head>
+<body>
+  <div id="cap"></div>
+  <script type="module" src="/scene.js"></script>
+</body>
+</html>
