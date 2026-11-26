@@ -45,16 +45,8 @@ jobs:
           GROQ_API_KEY_3: ${{ secrets.GROQ_API_KEY_3 }}
         run: node src/props.mjs
 
-      - name: Narration (deep voice)
-        run: |
-          python -m edge_tts \
-            --voice en-US-GuyNeural \
-            --pitch=-14Hz \
-            --rate=-4% \
-            --file work/narration.txt \
-            --write-media work/voice_raw.mp3
-          # extra low-end for a slightly deeper tone
-          ffmpeg -y -i work/voice_raw.mp3 -af "bass=g=5:f=110,loudnorm" work/voice.mp3
+      - name: Narration (deep voice, natural pauses and breaths)
+        run: node src/voice.mjs
 
       - name: Build timeline
         run: node src/build_plan.mjs
