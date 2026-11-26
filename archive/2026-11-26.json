@@ -1,68 +1,65 @@
 {
-  "title": "Exploding Beetle Chemistry",
-  "description": "A deadpan narrator reveals how the bombardier beetle creates a boiling chemical spray, while two stiff mannequins act it out in a lab supply closet.",
+  "title": "Mantis Shrimp's Hidden Shockwave",
+  "description": "A mantis shrimp smashes a glass like a hammer.",
   "tags": [
-    "biology",
-    "bombardier beetle",
-    "chemical defense",
     "edutainment",
-    "short"
+    "science",
+    "facts",
+    "shorts",
+    "studio",
+    "underwater",
+    "human"
   ],
   "characters": {
     "A": {
-      "name": "Maya",
-      "role": "night‑shift nurse",
-      "attitude": "tired, sarcastic"
+      "name": "Dummy A",
+      "role": "",
+      "attitude": ""
     },
     "B": {
-      "name": "Leo",
-      "role": "new intern",
-      "attitude": "overconfident, fidgety"
+      "name": "Dummy B",
+      "role": "",
+      "attitude": ""
     }
   },
-  "relationship": "Maya doubts Leo's competence; Leo wants to prove himself, and a broken vial could ruin the demo.",
+  "relationship": "",
   "setting": {
-    "name": "hospital supply room",
-    "wall": "#c9d6d3",
-    "floor": "#9aa5a3"
+    "name": "studio_void",
+    "wall": "#d9dde0",
+    "floor": "#c4c9cd"
   },
   "props": [
     {
-      "id": "glass_vial",
-      "name": "small glass vial",
-      "purpose": "holds the beetle's defensive chemicals",
-      "layer": "foreground",
-      "x": -0.5,
-      "holdable": true,
-      "weight": 0.2
-    },
-    {
-      "id": "metal_plate",
-      "name": "cold metal plate",
-      "purpose": "receives the spray for demonstration",
+      "id": "shrimp1",
+      "name": "metal cylinder",
+      "purpose": "appears in the line: \"A mantis shrimp smashes a glass like a hammer.\"",
+      "material": "worn_metal",
+      "color": "#8a9099",
       "layer": "midground",
-      "x": 0.6,
-      "holdable": false,
-      "weight": 0.8
-    },
-    {
-      "id": "beetle_model",
-      "name": "realistic beetle model",
-      "purpose": "shows the abdomen where the spray erupts",
-      "layer": "background",
       "x": 0,
       "holdable": false,
-      "weight": 0.1
+      "weight": 0.3
+    },
+    {
+      "id": "bubble1",
+      "name": "sphere particle",
+      "purpose": "appears in the line: \"But its strike creates a vapor bubble that detonates.\"",
+      "material": "translucent_blue",
+      "color": "#6fb7e8",
+      "layer": "midground",
+      "x": 0,
+      "holdable": false,
+      "weight": 0.3
     }
   ],
   "beats": [
     {
-      "text": "The bombardier beetle stores two separate chemicals in its abdomen.",
-      "action": "A stands beside the metal_plate, arms relaxed, while B leans toward the beetle_model, eyes curious.",
+      "text": "A mantis shrimp smashes a glass like a hammer.",
+      "action": "studio_void: metal_cylinder@center_floor",
       "poseA": "calm",
-      "poseB": "curious",
-      "lookA": "metal_plate",
-      "lookB": "beetle_model",
+      "poseB": "calm",
+      "lookA": "shrimp1",
+      "lookB": "shrimp1",
       "holdA": null,
       "holdB": null,
       "focus": "both",
@@ -74,123 +71,420 @@
       "ramp": false,
       "motion": null,
       "highlight": null,
-      "sfx": null
+      "sfx": null,
+      "layout": {
+        "shrimp1": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_WIDE_FRONT"
     },
     {
-      "text": "When threatened, it mixes them in a tiny reaction chamber.",
-      "action": "B picks up the glass_vial, tilts it as if pouring, while A watches skeptically.",
+      "text": "You’d expect a simple punch, nothing spectacular.",
+      "action": "studio_void: metal_cylinder@left_stand",
       "poseA": "calm",
-      "poseB": "confusion",
-      "lookA": "B",
-      "lookB": "glass_vial",
+      "poseB": "calm",
+      "lookA": "shrimp1",
+      "lookB": "shrimp1",
       "holdA": null,
-      "holdB": "glass_vial",
-      "focus": "B",
-      "shot": "hazard_ecu",
-      "shotTarget": "glass_vial",
-      "shotTo": "B",
+      "holdB": null,
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "shrimp1",
+      "shotTo": null,
       "shotPart": "chest",
       "shotWho": "A",
       "ramp": false,
       "motion": null,
       "highlight": null,
-      "sfx": {
-        "text": "soft clink of glass",
-        "seconds": 0.8
-      }
-    },
-    {
-      "text": "The chemicals ignite at 100 °C, producing a rapid burst of steam and quinones.",
-      "action": "A places the glass_vial over the metal_plate, the vial's tip contacts the plate, starting the reaction.",
-      "poseA": "calm",
-      "poseB": "confusion",
-      "lookA": "metal_plate",
-      "lookB": "glass_vial",
-      "holdA": "glass_vial",
-      "holdB": null,
-      "focus": "metal_plate",
-      "shot": "impact_closeup",
-      "shotTarget": "glass_vial",
-      "shotTo": "A",
-      "shotPart": "chest",
-      "shotWho": "A",
-      "ramp": true,
-      "motion": null,
-      "highlight": {
-        "prop": "glass_vial",
-        "who": null,
-        "part": "chest",
-        "color": "red"
+      "sfx": null,
+      "layout": {
+        "shrimp1": {
+          "x": -1.1,
+          "y": 0,
+          "z": 0
+        }
       },
-      "sfx": {
-        "text": "sharp pop and hiss",
-        "seconds": 1
-      }
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_MEDIUM_ACTOR"
     },
     {
-      "text": "A flash of orange‑red steam erupts, enough to deter a predator.",
-      "action": "B recoils, stepping back, while A watches the steam rise from the plate.",
-      "poseA": "shock",
-      "poseB": "fear",
-      "lookA": "beetle_model",
-      "lookB": "metal_plate",
+      "text": "But its strike creates a vapor bubble that detonates.",
+      "action": "studio_void: metal_cylinder@right_stand, sphere_particle@overhead_drop (pulse_glow)",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "bubble1",
+      "lookB": "bubble1",
       "holdA": null,
       "holdB": null,
-      "focus": "metal_plate",
-      "shot": "xray",
-      "shotTarget": "A",
+      "focus": "both",
+      "shot": "hazard_ecu",
+      "shotTarget": "bubble1",
       "shotTo": null,
       "shotPart": "chest",
       "shotWho": "A",
       "ramp": false,
       "motion": null,
       "highlight": {
-        "prop": null,
-        "who": "A",
-        "part": "chest",
+        "prop": "bubble1",
         "color": "orange"
       },
-      "sfx": null
+      "sfx": {
+        "text": "electric hum pulsing",
+        "seconds": 1
+      },
+      "layout": {
+        "shrimp1": {
+          "x": 1.1,
+          "y": 0,
+          "z": 0
+        },
+        "bubble1": {
+          "x": 0,
+          "y": 4.2,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_CLOSEUP_CENTER"
     },
     {
-      "text": "The beetle’s internal chambers survive, resealing for the next attack.",
-      "action": "A gently taps the beetle_model, showing the intact abdomen; B watches, impressed.",
+      "text": "When the club hits, water vaporizes instantly, forming a bubble.",
+      "action": "underwater_deep: sphere_particle@mid_water (pulse_glow)",
       "poseA": "calm",
-      "poseB": "curious",
-      "lookA": "beetle_model",
-      "lookB": "beetle_model",
+      "poseB": "calm",
+      "lookA": "bubble1",
+      "lookB": "bubble1",
       "holdA": null,
       "holdB": null,
-      "focus": "beetle_model",
-      "shot": "cutaway",
-      "shotTarget": "A",
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "both",
       "shotTo": null,
       "shotPart": "chest",
       "shotWho": "A",
       "ramp": false,
       "motion": null,
-      "highlight": null,
-      "sfx": null
+      "highlight": {
+        "prop": "bubble1",
+        "color": "orange"
+      },
+      "sfx": {
+        "text": "electric hum pulsing",
+        "seconds": 1
+      },
+      "layout": {
+        "bubble1": {
+          "x": 0,
+          "y": 1.5,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "wall": "#0c2a44",
+      "floor": "#c2b280",
+      "place": "underwater_deep",
+      "camera": "CAM_UNDERWATER_WIDE"
     },
     {
-      "text": "So even a tiny beetle can launch a boiling chemical bomb on command.",
-      "action": "Both return to their original standing poses, empty‑handed, eyes on the camera.",
+      "text": "The bubble collapses, sending a shockwave through the prey.",
+      "action": "underwater_deep: sphere_particle@ocean_floor (pulse_glow)",
       "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "bubble1",
+      "lookB": "bubble1",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "both",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": {
+        "prop": "bubble1",
+        "color": "orange"
+      },
+      "sfx": {
+        "text": "electric hum pulsing",
+        "seconds": 1
+      },
+      "layout": {
+        "bubble1": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "wall": "#0c2a44",
+      "floor": "#c2b280",
+      "place": "underwater_deep",
+      "camera": "CAM_CLOSEUP_FACE"
+    },
+    {
+      "text": "Even a tiny fish freezes, unable to move.",
+      "action": "underwater_deep: human_dummy@surface_above",
+      "poseA": "shock",
       "poseB": "calm",
       "lookA": "camera",
       "lookB": "camera",
       "holdA": null,
       "holdB": null,
-      "focus": "both",
-      "shot": "wide",
-      "shotTarget": "both",
+      "focus": "A",
+      "shot": "top_down",
+      "shotTarget": "A",
       "shotTo": null,
       "shotPart": "chest",
       "shotWho": "A",
       "ramp": false,
       "motion": null,
       "highlight": null,
-      "sfx": null
+      "sfx": null,
+      "layout": {},
+      "charLayout": {
+        "A": {
+          "visible": true,
+          "x": 0,
+          "y": 4.5,
+          "z": 0
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "wall": "#0c2a44",
+      "floor": "#c2b280",
+      "place": "underwater_deep",
+      "camera": "CAM_ABOVE_LOOKING_DOWN"
+    },
+    {
+      "text": "Inside, a spring-loaded hammer stores energy like a spring.",
+      "action": "human_anatomy_cutaway: metal_cylinder@brain",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "shrimp1",
+      "lookB": "shrimp1",
+      "holdA": null,
+      "holdB": null,
+      "focus": "A",
+      "shot": "cutaway",
+      "shotTarget": "A",
+      "shotTo": null,
+      "shotPart": "head",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "shrimp1": {
+          "x": 0,
+          "y": 2.32,
+          "z": 0.05
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "wall": "#10151c",
+      "floor": "#1d2430",
+      "place": "human_anatomy_cutaway",
+      "camera": "CAM_TORSO_FRONT"
+    },
+    {
+      "text": "When released, the club snaps at twenty‑three meters per second.",
+      "action": "human_anatomy_cutaway: metal_cylinder@bloodstream",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "shrimp1",
+      "lookB": "shrimp1",
+      "holdA": null,
+      "holdB": null,
+      "focus": "A",
+      "shot": "xray",
+      "shotTarget": "A",
+      "shotTo": null,
+      "shotPart": "arm",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "shrimp1": {
+          "x": -0.32,
+          "y": 1.35,
+          "z": 0.05
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "wall": "#10151c",
+      "floor": "#1d2430",
+      "place": "human_anatomy_cutaway",
+      "camera": "CAM_MACRO_ORGAN"
+    },
+    {
+      "text": "The impact shatters the shell, bubble bursts with a pop.",
+      "action": "studio_void: metal_cylinder@overhead_drop (drop_gravity), human_dummy@center_floor (ragdoll_hit)",
+      "poseA": "calm",
+      "poseB": "collapse",
+      "lookA": "shrimp1",
+      "lookB": "shrimp1",
+      "holdA": null,
+      "holdB": null,
+      "focus": "B",
+      "shot": "wide",
+      "shotTarget": "both",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": true,
+      "motion": {
+        "prop": "shrimp1",
+        "to": "B",
+        "part": "head",
+        "style": "drop",
+        "from": {
+          "x": 0,
+          "y": 4.2,
+          "z": 0
+        }
+      },
+      "highlight": null,
+      "sfx": {
+        "text": "dull body impact thud",
+        "seconds": 1
+      },
+      "shake": 0.06,
+      "layout": {
+        "shrimp1": {
+          "x": 0,
+          "y": 4.2,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": true,
+          "x": 0.32,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_WIDE_FRONT"
+    },
+    {
+      "text": "Its strike matches a bullet’s acceleration, pure biological artillery.",
+      "action": "studio_void: metal_cylinder@center_floor",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "shrimp1",
+      "lookB": "shrimp1",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "shrimp1",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "shrimp1": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_MEDIUM_ACTOR"
     }
   ]
 }
