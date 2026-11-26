@@ -1,13 +1,18 @@
 // Narration, one line per beat, so the camera cuts land exactly on the words.
 // Human-sounding touches: irregular micro-pauses (longer after questions), soft breaths between some lines,
 // warm EQ (boost 100-250 Hz, soften the harsh highs) and a very quiet room-tone bed instead of dead digital silence.
-// Voice: edge-tts, pitched down for a deeper tone. Override with TTS_VOICE / TTS_PITCH / TTS_RATE.
+// Engines (TTS_ENGINE): "edge" (default, edge-tts, pitched down with TTS_PITCH) or "kokoro" (local Kokoro-82M, voice KOKORO_VOICE,
+// made deeper with KOKORO_DEPTH, 0.94 = about 6% lower). If Kokoro is not installed or fails, it falls back to edge-tts.
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const script = JSON.parse(fs.readFileSync('work/script.json', 'utf8'));
-const FAKE = process.env.VOICE_FAKE === '1'; // test mode: sine tones instead of edge-tts
+const FAKE = process.env.VOICE_FAKE === '1'; // test mode: sine tones instead of a real voice
+const ENGINE = (process.env.TTS_ENGINE || 'edge').toLowerCase();
+const KVOICE = process.env.KOKORO_VOICE || 'am_michael';
+const KDEPTH = Math.min(1, Math.max(0.8, parseFloat(process.env.KOKORO_DEPTH || '0.94')));
+const KSPEED = process.env.KOKORO_SPEED || '0.95';
 const VOICE = process.env.TTS_VOICE || 'en-US-GuyNeural';
 const PITCH = process.env.TTS_PITCH || '-14Hz';
 const RATE = process.env.TTS_RATE || '-4%';
@@ -42,6 +47,33 @@ function tts(text, out) {
   }
 }
 
+// Make one wav clip per line: work/vo/c<i>.wav (44.1 kHz mono)
+let engineUsed = FAKE ? 'TEST TONES' : `edge-tts ${VOICE} ${PITCH}`;
+function clipsKokoro() {
+  const items = script.beats.map((b, i) => ({ text: b.text, out: `${DIR}/k${i}.wav` }));
+  fs.writeFileSync(`${DIR}/jobs.json`, JSON.stringify({ voice: KVOICE, lang: KVOICE.startsWith('b') ? 'b' : 'a', speed: Number(KSPEED), items }));
+  run(PY, ['tools/kokoro_tts.py', `${DIR}/jobs.json`]);
+  items.forEach((it, i) => // lower the pitch a little for a deeper voice, keeping the speed
+    run('ffmpeg', ['-y', '-i', it.out, '-af', `asetrate=${Math.round(24000 * KDEPTH)},aresample=44100,atempo=${(1 / KDEPTH).toFixed(4)}`, '-ac', '1', '-c:a', 'pcm_s16le', wav(`c${i}`)]));
+}
+function clipsEdge() {
+  script.beats.forEach((b, i) => {
+    tts(b.text, `${DIR}/${i}.mp3`);
+    run('ffmpeg', ['-y', '-i', `${DIR}/${i}.mp3`, '-ar', '44100', '-ac', '1', '-c:a', 'pcm_s16le', wav(`c${i}`)]);
+  });
+}
+if (ENGINE === 'kokoro' && !FAKE) {
+  try {
+    clipsKokoro();
+    engineUsed = `Kokoro ${KVOICE} depth ${KDEPTH}`;
+  } catch (e) {
+    console.warn(`Kokoro failed (${e.message.slice(0, 300)}). Falling back to edge-tts.`);
+    clipsEdge();
+  }
+} else {
+  clipsEdge();
+}
+
 const segs = [];
 const timing = [];
 silence('lead', 0.15);
@@ -49,9 +81,6 @@ segs.push('lead');
 let t = 0.15;
 
 script.beats.forEach((b, i) => {
-  const mp3 = `${DIR}/${i}.mp3`;
-  tts(b.text, mp3);
-  run('ffmpeg', ['-y', '-i', mp3, '-ar', '44100', '-ac', '1', '-c:a', 'pcm_s16le', wav(`c${i}`)]);
   const start = i === 0 ? 0 : t; // a cut lands on the first word of its line
   segs.push(`c${i}`);
   t += dur(wav(`c${i}`));
@@ -84,4 +113,4 @@ run('ffmpeg', ['-y', '-i', `${DIR}/raw.wav`, '-f', 'lavfi', '-i', `anoisesrc=d=$
   '-filter_complex', chain, '-map', '[out]', '-ar', '44100', '-b:a', '192k', 'work/voice.mp3']);
 
 fs.writeFileSync('work/timing.json', JSON.stringify({ beats: timing, duration: t }, null, 2));
-console.log(`Voice ready: ${script.beats.length} lines, ${t.toFixed(1)}s (${FAKE ? 'TEST TONES' : VOICE + ' ' + PITCH})`);
+console.log(`Voice ready: ${script.beats.length} lines, ${t.toFixed(1)}s (${engineUsed})`);

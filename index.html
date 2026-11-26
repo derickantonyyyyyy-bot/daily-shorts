@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090b12">
+    <title>AI HUB | Your AI Workspace</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <h1>AI<span>HUB</span></h1>
+        <div class="status">YOUR AI WORKSPACE</div>
+    </header>
+
+    <main class="container">
+
+        <section class="welcome">
+            <h2>Your AI. Your workspace.</h2>
+            <p>All your favourite AI platforms in one place.</p>
+        </section>
+
+        <section class="auth-panel">
+            <h2>AI HUB Account</h2>
+            <p>Sign in to access your personal workspace.</p>
+
+            <form id="auth-form">
+                <input
+                    type="email"
+                    id="auth-email"
+                    placeholder="Your email address"
+                    autocomplete="email"
+                    required
+                >
+
+                <input
+                    type="password"
+                    id="auth-password"
+                    placeholder="Password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit" id="login-button">
+                    Sign In
+                </button>
+
+                <button type="button" id="signup-button">
+                    Create Account
+                </button>
+            </form>
+
+            <button type="button" id="logout-button" hidden>
+                Sign Out
+            </button>
+
+            <p id="auth-message" aria-live="polite">
+                Not signed in.
+            </p>
+        </section>
+
+        <section class="workspace">
+            <div>
+                <h3>My Workspace</h3>
+                <p id="last-used">Welcome! Choose your first AI.</p>
+            </div>
+            <span class="workspace-icon">✦</span>
+        </section>
+
+        <section class="ai-grid">
+
+            <div class="ai-card">
+                <h2>ChatGPT</h2>
+                <p>Explore ideas and create with AI.</p>
+                <button onclick="openAI('chatgpt')">
+                    Open ChatGPT →
+                </button>
+            </div>
+
+            <div class="ai-card">
+                <h2>Claude</h2>
+                <p>Think, write and build with AI.</p>
+                <button onclick="openAI('claude')">
+                    Open Claude →
+                </button>
+            </div>
+
+            <div class="ai-card">
+                <h2>Gemini</h2>
+                <p>Discover and explore with AI.</p>
+                <button onclick="openAI('gemini')">
+                    Open Gemini →
+                </button>
+            </div>
+
+        </section>
+
+        <section class="session-info">
+            <h3>About your AI sessions</h3>
+            <p>
+                Sign in directly on each AI platform.
+                Your browser manages those login sessions.
+                AI HUB remembers your workspace preferences.
+            </p>
+        </section>
+
+        
+        <section class="automation-panel">
+            <h2>AI Video Automation</h2>
+            <p>Create a new video inspired by your reference.</p>
+        
+            <form id="video-form">
+                <label for="reference-video">Reference MP4</label>
+                <input
+                    type="file"
+                    id="reference-video"
+                    accept="video/mp4"
+                    required
+                >
+        
+                <label for="video-instructions">Instructions</label>
+                <textarea
+                    id="video-instructions"
+                    required
+                >Create a new video inspired by my uploaded reference video, including voiceover and transitions.</textarea>
+        
+                <h3>Publishing destinations</h3>
+        
+                <label>
+                    <input type="checkbox" name="destination" value="youtube" checked>
+                    YouTube
+                </label>
+        
+                <label>
+                    <input type="checkbox" name="destination" value="facebook" checked>
+                    Facebook
+                </label>
+        
+                <label>
+                    <input type="checkbox" name="destination" value="telegram" checked>
+                    Telegram
+                </label>
+        
+                <p>Resume check interval: 5 hours</p>
+                <p>Publishing approval: Required</p>
+        
+                <button type="submit" id="upload-button">
+                    Upload Reference Video
+                </button>
+        
+                <p id="upload-message" aria-live="polite"></p>
+            </form>
+        </section>
+
+
+    </main>
+
+    <footer>
+        AI HUB © 2026 | Your personal AI workspace.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>

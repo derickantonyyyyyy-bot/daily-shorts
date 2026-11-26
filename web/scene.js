@@ -240,18 +240,36 @@ const PART_Y = { head: 2.3, chest: 1.75, arm: 1.25, leg: 0.35 };
 const LAYER_Z = { foreground: 1.7, midground: -0.9, background: -3 };
 const props = {};
 
+// Primitives (size arrays): box [w,h,d] sphere [r] cylinder [r,h] cone [r,h] capsule [r,len]
+// ellipsoid [rx,ry,rz] dome [r] (half sphere) tapered [rTop,rBottom,h] torus [r,tube] wedge [w,h,d] (triangular prism)
+function makeGeo(shape, a, b, c) {
+  switch (shape) {
+    case 'box': return new THREE.BoxGeometry(a, b, c);
+    case 'sphere': return new THREE.SphereGeometry(a, 16, 12);
+    case 'cylinder': return new THREE.CylinderGeometry(a, a, b, 16);
+    case 'cone': return new THREE.ConeGeometry(a, b, 16);
+    case 'ellipsoid': return new THREE.SphereGeometry(1, 20, 14).scale(a, b, c);
+    case 'dome': return new THREE.SphereGeometry(a, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2);
+    case 'tapered': return new THREE.CylinderGeometry(a, b, c, 16);
+    case 'torus': return new THREE.TorusGeometry(a, b, 10, 24);
+    case 'wedge': {
+      const sh = new THREE.Shape();
+      sh.moveTo(0, 0); sh.lineTo(a, 0); sh.lineTo(0, b);
+      const g = new THREE.ExtrudeGeometry(sh, { depth: c, bevelEnabled: false });
+      g.center();
+      return g;
+    }
+    default: return new THREE.CapsuleGeometry(a, b, 4, 10);
+  }
+}
+
 function buildProps(list) {
   for (const def of list) {
     const g = new THREE.Group();
     const pm = [];
     for (const p of def.parts) {
       const [a, b, c] = p.size;
-      const geo =
-        p.shape === 'box' ? new THREE.BoxGeometry(a, b, c)
-        : p.shape === 'sphere' ? new THREE.SphereGeometry(a, 16, 12)
-        : p.shape === 'cylinder' ? new THREE.CylinderGeometry(a, a, b, 16)
-        : p.shape === 'cone' ? new THREE.ConeGeometry(a, b, 16)
-        : new THREE.CapsuleGeometry(a, b, 4, 10);
+      const geo = makeGeo(p.shape, a, b, c);
       const mat = M(new THREE.Color(p.color).getHex(), 0.65, def.id);
       pm.push(mat);
       const m = mesh(geo, mat, p.pos[0], p.pos[1], p.pos[2]);
@@ -282,6 +300,7 @@ function motionPos(pr, m, mp) {
   const end = motionEnd(m);
   const start = m.style === 'drop'
     ? V(end.x, m.from ? Math.max(m.from.y, 2.5) : 4.2, end.z)
+    : m.style === 'flow' && m.from ? V(m.from.x, m.from.y, m.from.z) // flows start exactly at their anchor
     : (m.from ? V(m.from.x, m.from.y + 0.6, m.from.z) : pr.home.clone().setY(pr.home.y + 0.6));
   const pos = start.clone().lerp(end, m.style === 'drop' ? mp * mp : mp);
   if (m.style === 'fly') pos.y += Math.sin(mp * Math.PI) * 0.5;
@@ -713,6 +732,10 @@ function render(t) {
       else if (lay && lay[id]) g.position.set(lay[id].x, lay[id].y || 0, lay[id].z);
       else g.position.copy(pr.home);
     }
+    if (pr.def.creature && g.parent === scene && !mo && g.visible) { // creature-like props idle: bob and sway
+      g.position.y += Math.abs(Math.sin(t * 2.4 + pr.home.x)) * 0.03;
+      g.rotation.y = Math.sin(t * 1.3 + pr.home.x) * 0.18;
+    }
     if (loopK > 0 && !lay && g.parent === scene) g.position.lerp(pr.home, loopK);
   }
   scene.updateMatrixWorld(true);
@@ -806,6 +829,7 @@ function render(t) {
     if (after >= 0 && after < frames(5)) shake = Math.max(shake, 0.06);
   }
   if (beat.shake) shake = Math.max(shake, beat.shake); // scene-wide rumble (blueprint "shake_violent")
+  window.__shake = shake;
   const fr = Math.round(t * FPS);
   const jitter = V(hash(fr) - 0.5, hash(fr + 7.3) - 0.5, hash(fr + 13.9) - 0.5).multiplyScalar(2 * shake);
 
@@ -826,4 +850,51 @@ window.setup = (plan) => {
   buildProps(plan.props || []);
 };
 window.renderFrame = (t) => render(t);
+
+// State snapshot for the automatic checker (src/qa.mjs): is each object/character on screen, did it move, is it glowing...
+const _box = new THREE.Box3(), _v = new THREE.Vector3();
+function screenInfo(obj) {
+  cam.updateMatrixWorld(true);
+  obj.updateWorldMatrix(true, true);
+  _box.setFromObject(obj);
+  if (_box.isEmpty()) return { onScreen: false, frac: 0, size: 0 };
+  let x0 = 9, x1 = -9, y0 = 9, y1 = -9, behind = false;
+  for (let i = 0; i < 8; i++) {
+    _v.set(i & 1 ? _box.max.x : _box.min.x, i & 2 ? _box.max.y : _box.min.y, i & 4 ? _box.max.z : _box.min.z);
+    if (_v.clone().applyMatrix4(cam.matrixWorldInverse).z > -0.05) behind = true;
+    _v.project(cam);
+    x0 = Math.min(x0, _v.x); x1 = Math.max(x1, _v.x); y0 = Math.min(y0, _v.y); y1 = Math.max(y1, _v.y);
+  }
+  const area = Math.max(1e-6, (x1 - x0) * (y1 - y0));
+  const ox = Math.max(0, Math.min(x1, 1) - Math.max(x0, -1)), oy = Math.max(0, Math.min(y1, 1) - Math.max(y0, -1));
+  const frac = behind ? 0 : (ox * oy) / area;
+  const size = (y1 - y0) / 2; // fraction of the frame height
+  return { onScreen: !behind && frac >= 0.4 && size >= 0.012, frac: +frac.toFixed(2), size: +size.toFixed(3) };
+}
+window.probe = () => {
+  const out = { shake: window.__shake || 0, objects: {}, chars: {} };
+  for (const [id, pr] of Object.entries(props)) {
+    const g = pr.group;
+    const wp = g.getWorldPosition(new THREE.Vector3());
+    out.objects[id] = {
+      visible: g.visible,
+      ...(g.visible ? screenInfo(g) : { onScreen: false, frac: 0, size: 0 }),
+      pos: [+wp.x.toFixed(2), +wp.y.toFixed(2), +wp.z.toFixed(2)],
+      glowing: pr.mats.some((m) => m.emissiveIntensity > 0.05),
+    };
+  }
+  for (const who of ['A', 'B']) {
+    const c = chars[who];
+    const wp = c.yawG.getWorldPosition(new THREE.Vector3());
+    out.chars[who] = {
+      visible: c.yawG.visible,
+      ...(c.yawG.visible ? screenInfo(c.yawG) : { onScreen: false, frac: 0, size: 0 }),
+      pos: [+wp.x.toFixed(2), +wp.y.toFixed(2), +wp.z.toFixed(2)],
+      lying: Math.abs(c.root.rotation.z) > 0.8,
+      skinOpacity: c.mats.skin.transparent ? c.mats.skin.opacity : 1,
+      glowing: marker.visible,
+    };
+  }
+  return out;
+};
 window.ready = true;

@@ -2,6 +2,7 @@
 // never land in mid-air. This module holds the directory, the prompt, a strict validator and the converter that turns
 // the 10 scenes into the plan the renderer already understands (characters, props, beats with shots).
 import { HUMAN_RULES, scrub } from './human.mjs';
+import { isCreature } from './recipes.mjs';
 
 const R = (n) => Math.round(n * 100) / 100;
 
@@ -115,13 +116,13 @@ You MUST ONLY use the exact "place" names and corresponding "anchor" and "camera
 ${directory()}
 
 ### 3. OBJECT & ANIMATION RULES
-- Use simple, concrete nouns for "object_type" (e.g. "human_dummy", "wooden_chair", "metal_cylinder", "credit_card", "water_wave", "sphere_particle", "scalpel", "car_sedan", "icicle", "pressure_cooker"). "human_dummy" is the actor; use at most 2 different dummies in the whole video, and reuse the same "id" for the same dummy or object across scenes.
+- Use simple, concrete nouns for "object_type" (e.g. "human_dummy", "wooden_chair", "metal_cylinder", "credit_card", "water_wave", "sphere_particle", "scalpel", "car_sedan", "icicle", "pressure_cooker"). Creatures and characters are allowed as objects too ("cat", "bee", "shark", "robot", "spider"): they are built from combined shapes and get a small idle animation. "human_dummy" is the actor; use at most 2 different dummies in the whole video, and reuse the same "id" for the same dummy or object across scenes.
 - "placements" has 1 to 5 entries per scene. At most 2 dummies per scene.
 - Use "is_cutaway": true ONLY when showing inside a body, wall, or machine.
 - Use "expression" ONLY on "human_dummy" actors: ${JSON.stringify(EXPRESSIONS)}.
 - Use "pose" ONLY on "human_dummy" actors: ${JSON.stringify(POSES)}.
 - "material" is one of: ${JSON.stringify(MATERIALS)}.
-- Use "action" to tell the renderer how the object moves during the scene: ${JSON.stringify(ACTIONS)}. Use "drop_gravity" for something falling onto a dummy or the floor, "ragdoll_hit" when a dummy is struck and goes limp, "pulse_glow" for the hazard or injured part, "flow_path" for something travelling through (blood, water, a particle). Use drop_gravity, ragdoll_hit, slide_inward or flow_path in at most 3 scenes in the whole video.
+- Use "action" to tell the renderer how the object moves during the scene: ${JSON.stringify(ACTIONS)}. Use "drop_gravity" for something falling onto a dummy or the floor, "ragdoll_hit" when a dummy is struck and goes limp, "pulse_glow" for the hazard or injured part, "flow_path" for something travelling through (blood, water, a particle). Use drop_gravity, ragdoll_hit, slide_inward or flow_path in at most 3 scenes in the whole video and at most ONE such action per scene (the renderer shows one moving object per scene; everything you list in a scene must really be visible and really do its action, because the finished video is checked against this script).
 - Vary the camera: never use the same camera twice in a row.
 
 ### 4. OUTPUT FORMAT
@@ -295,8 +296,10 @@ export function toScript(bp, summary = '') {
       }
       if (!a.isDummy && MOTION_ACTIONS.includes(a.action) && !motion && motions < 3) {
         const from = layout[a.id];
-        const style = a.action === 'drop_gravity' ? 'drop' : 'fly';
-        motion = victim
+        const style = a.action === 'drop_gravity' ? 'drop' : a.action === 'flow_path' ? 'flow' : 'fly';
+        // flowing things (blood, water, particles) travel along the body or floor instead of arcing in from above
+        const flowAt = style === 'flow' ? { x: from.x, y: Math.max(0.2, R(from.y - 0.9)), z: from.z } : null;
+        motion = flowAt ? { prop: a.id, at: flowAt, style, from } : victim
           ? { prop: a.id, to: victim, part: OVERHEAD.has(a.anchor) || sc.place === ANATOMY && PART_OF[a.anchor] === 'head' ? 'head' : PART_OF[a.anchor] || 'chest', style, from }
           : { prop: a.id, at: style === 'drop' ? { x: from.x, y: 0.15, z: from.z } : { x: 0, y: 0.3, z: 0.3 }, style, from };
         motions++;
@@ -315,6 +318,22 @@ export function toScript(bp, summary = '') {
     if (sh.shot === 'projectile_pov' && !motion) sh = { shot: 'wide', target: 'both' };
     if (sh.shot === 'hazard_ecu' && !(sh.target in layout)) sh = { shot: 'wide', target: 'both' };
 
+    // What the finished video must show: the checker (src/qa.mjs) verifies exactly this.
+    const expect = {
+      objects: objs.map((o) => o.id),
+      chars: ['A', 'B'].filter((w) => charLayout[w].visible),
+      actions: [],
+      dropped: [],
+    };
+    if (motion) expect.actions.push({ kind: 'motion', id: motion.prop, style: motion.style, to: motion.to || null, at: motion.at || null, part: motion.part || 'chest', from: motion.from });
+    for (const a of actors) {
+      if (a.action === 'pulse_glow') expect.actions.push(a.isDummy ? { kind: 'glow', who: a.who } : { kind: 'glow', id: a.id });
+      if (a.action === 'shake_violent') expect.actions.push({ kind: 'shake' });
+      if (a.action === 'ragdoll_hit' && a.isDummy) expect.actions.push({ kind: 'ragdoll', who: a.who });
+      if (!a.isDummy && MOTION_ACTIONS.includes(a.action) && !(motion && motion.prop === a.id)) expect.dropped.push({ kind: 'motion', id: a.id, action: a.action });
+    }
+    if (['xray', 'cutaway'].includes(sh.shot)) expect.actions.push({ kind: 'cutaway', who: sh.target === 'B' ? 'B' : 'A' });
+
     const lookA = main || 'camera', lookB = main || 'camera';
     const visibleBoth = charLayout.A.visible && charLayout.B.visible;
     return {
@@ -327,7 +346,7 @@ export function toScript(bp, summary = '') {
       shot: sh.shot, shotTarget: sh.target, shotTo: sh.to || null, shotPart: sh.part || 'chest', shotWho: 'A',
       ramp, motion, highlight, sfx,
       shake: beat.shake || undefined,
-      layout, charLayout,
+      layout, charLayout, expect,
       wall: P.wall, floor: P.floor, place: sc.place, camera: sc.camera,
     };
   });
@@ -339,6 +358,7 @@ export function toScript(bp, summary = '') {
     purpose: `appears in the line: "${o.scene}"`,
     material: o.material,
     color: MATERIAL_COLOR[o.material],
+    creature: isCreature(o.type),
     layer: 'midground', x: 0, holdable: false, weight: 0.3,
   }));
   for (const place of Object.keys(sets)) {

@@ -9,6 +9,13 @@ Every day at **3:30 PM IST** (cron `0 10 * * *` UTC), GitHub Actions will:
 5. **Three.js renders** 1080x1920: stiff mannequins, stepped robotic easing, eye lines toward the action, held objects that drag posture by weight, camera focus and layered foreground/midground/background
 6. Encodes the MP4, publishes it as a **GitHub Release**, commits the script to `archive/`, uploads to YouTube as a Short
 
+## Reference check, character props, Kokoro
+
+- **Reference check** (`src/qa.mjs`, before render): the real Three.js scene is probed at several moments per scene. It verifies (1) every object and character the script names is on screen and recognisably framed, and (2) every stated action really happens (thrown object travels toward its target, glow, shake, ragdoll, X-ray). Failures are auto-repaired (wider shot, rebuilt motion, forced travel) for up to 3 rounds; results go to `work/qa.json` (uploaded as the `qa-reports` artifact). Set `QA_STRICT=1` to fail the run if something stays unresolved.
+- **Vision check** (`src/qa_vision.mjs`, after render, needs `ANTHROPIC_API_KEY`): Claude looks at one frame per scene and reports missing objects or actions in `work/qa_vision.json`. Report only.
+- **Character props:** objects are built by combining different shapes (sphere, ellipsoid, capsule, cone, tapered, torus, dome, wedge, cylinder, box) with `mirror` twins for eyes, ears, arms, legs. Creatures get faces, limbs and an idle animation. Local recipes in `src/recipes.mjs` are the fallback.
+- **Kokoro TTS:** add a repo *variable* (not secret) `TTS_ENGINE` = `kokoro`; optional `KOKORO_VOICE` (default `am_michael`), `KOKORO_DEPTH` env (0.94 = deeper). First run installs CPU torch (a few minutes). If Kokoro fails it falls back to edge-tts.
+
 ## Setup (one time)
 
 1. Create a GitHub repo and push this folder to it.

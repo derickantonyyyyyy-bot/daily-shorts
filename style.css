@@ -1,0 +1,45 @@
+
+/* AI HUB V2 WORKSPACE */
+
+.workspace {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(120deg, #191b3b, #111522);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 25px;
+}
+
+.workspace h3 {
+    margin-bottom: 8px;
+}
+
+.workspace p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.workspace-icon {
+    font-size: 30px;
+    color: var(--accent);
+}
+
+.session-info {
+    margin-top: 45px;
+    padding: 25px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.session-info h3 {
+    margin-bottom: 10px;
+}
+
+.session-info p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
