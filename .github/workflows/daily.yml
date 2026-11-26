@@ -1,0 +1,102 @@
+name: Daily Short
+
+on:
+  schedule:
+    # 3:30 PM IST = 10:00 UTC
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: System packages
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-liberation
+
+      - name: Install dependencies
+        run: |
+          npm install
+          pip install edge-tts
+
+      - name: Write today's directed script (Claude, or Groq if no Anthropic key)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GROQ_API_KEY_1: ${{ secrets.GROQ_API_KEY_1 }}
+        run: node src/script.mjs
+
+      - name: Design props (Groq, 3 passes with 3 keys: create, enhance, polish)
+        env:
+          GROQ_API_KEY_1: ${{ secrets.GROQ_API_KEY_1 }}
+          GROQ_API_KEY_2: ${{ secrets.GROQ_API_KEY_2 }}
+          GROQ_API_KEY_3: ${{ secrets.GROQ_API_KEY_3 }}
+        run: node src/props.mjs
+
+      - name: Narration (deep voice)
+        run: |
+          python -m edge_tts \
+            --voice en-US-GuyNeural \
+            --pitch=-14Hz \
+            --rate=-4% \
+            --file work/narration.txt \
+            --write-media work/voice_raw.mp3
+          # extra low-end for a slightly deeper tone
+          ffmpeg -y -i work/voice_raw.mp3 -af "bass=g=5:f=110,loudnorm" work/voice.mp3
+
+      - name: Build timeline
+        run: node src/build_plan.mjs
+
+      - name: Sound effects (ElevenLabs) and final mix
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: node src/sfx.mjs
+
+      - name: Render frames
+        run: node src/render.mjs
+
+      - name: Encode video
+        run: |
+          mkdir -p out
+          ffmpeg -y -framerate 30 -i work/frames/f%05d.jpg -i work/final.mp3 \
+            -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p \
+            -c:a aac -b:a 160k -shortest out/video.mp4
+
+      - name: Publish to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          D=$(date -u +%F)
+          gh release create "short-$D-$GITHUB_RUN_NUMBER" out/video.mp4 \
+            --title "$(jq -r .title work/script.json)" \
+            --notes "$(jq -r .description work/script.json)"
+
+      - name: Commit script and history
+        run: |
+          git config user.name "daily-shorts-bot"
+          git config user.email "bot@users.noreply.github.com"
+          mkdir -p archive
+          cp work/script.json "archive/$(date -u +%F).json"
+          git add data archive
+          git commit -m "Daily short $(date -u +%F)" || echo "nothing to commit"
+          git push
+
+      - name: Upload to YouTube
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YT_PRIVACY: ${{ vars.YT_PRIVACY }}
+        run: node src/youtube.mjs
