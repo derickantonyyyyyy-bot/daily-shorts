@@ -19,6 +19,7 @@ function expectation(b) {
   const objs = (ex.objects || []).map((id) => `"${id}" (a ${nameOf[id] || id})`);
   const acts = (ex.actions || []).map((a) => {
     if (a.kind === 'motion') return `"${a.id}" is ${a.style === 'drop' ? 'falling' : 'moving'} ${a.to ? 'toward character ' + a.to : 'through the scene'} (a single frame may catch it mid-path)`;
+    if (a.kind === 'perform') return `"${a.id}" is doing "${a.style}" (a block creature: ${a.style === 'walk' ? 'legs mid-stride' : a.style === 'wave' ? 'one arm raised' : a.style === 'flap' ? 'wings out' : a.style === 'hop' ? 'off the ground' : 'posed mid-motion'}; a single frame may catch a neutral moment)`;
     if (a.kind === 'glow') return `${a.id ? '"' + a.id + '"' : 'character ' + a.who} glows`;
     if (a.kind === 'shake') return 'the whole frame looks shaken';
     if (a.kind === 'ragdoll') return `character ${a.who} lies limp on the floor`;

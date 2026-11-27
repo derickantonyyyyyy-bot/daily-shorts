@@ -16,6 +16,10 @@ Every day at **3:30 PM IST** (cron `0 10 * * *` UTC), GitHub Actions will:
 - **Character props:** objects are built by combining different shapes (sphere, ellipsoid, capsule, cone, tapered, torus, dome, wedge, cylinder, box) with `mirror` twins for eyes, ears, arms, legs. Creatures get faces, limbs and an idle animation. Local recipes in `src/recipes.mjs` are the fallback.
 - **Kokoro TTS:** add a repo *variable* (not secret) `TTS_ENGINE` = `kokoro`; optional `KOKORO_VOICE` (default `am_michael`), `KOKORO_DEPTH` env (0.94 = deeper). First run installs CPU torch (a few minutes). If Kokoro fails it falls back to edge-tts.
 
+## Whiteboard mode (hand-drawn sketch version)
+
+Uses the bundled srt-whiteboard-animation renderer (MIT, by 江哥是老登啊, licence in `tools/whiteboard/`). After the 3D render, each scene's frame is turned into a pencil sketch on beige paper with a pale colour wash (`tools/whiteboard/sketch.py`), split into regions (background first, then the biggest subjects) and drawn stroke by stroke by a hand (`src/whiteboard.mjs`), with the same narration and sound effects. Set a repo **variable** `VIDEO_STYLE`: `whiteboard` (the sketch version becomes the main video and the 3D one is attached to the release as `video_3d.mp4`), or `both` (3D is main, the sketch video is attached as `video_whiteboard.mp4`). Unset = off. If the whiteboard step fails the 3D video is used. `WB_HAND=0` draws without the hand. The hand image has had the original author's pen logo painted out.
+
 ## Setup (one time)
 
 1. Create a GitHub repo and push this folder to it.

@@ -41,6 +41,11 @@ export function evaluate(beat, samples, i) {
       if (!moved) add('motion-static', { id: a.id }, `"${a.id}" never moves in scene ${i + 1}`);
       else if (!seen) add('motion-unseen', { id: a.id }, `"${a.id}" moves but is never on screen`);
       if (moved && !landed) add('motion-miss', { id: a.id }, `"${a.id}" does not end up at its target`);
+    } else if (a.kind === 'perform') {
+      const poses = samples.map((x) => x.p.objects[a.id]?.pose ?? 0);
+      const moving = Math.max(...poses) - Math.min(...poses) >= 0.1 || Math.max(...poses) >= 0.3;
+      if (!samples.some((x) => x.p.objects[a.id]?.onScreen)) add('perform-unseen', { id: a.id }, `"${a.id}" should ${a.style} but is never on screen`);
+      else if (!moving) add('perform-static', { id: a.id, style: a.style }, `"${a.id}" should ${a.style} but stays still`);
     } else if (a.kind === 'glow') {
       const ok = samples.some((s) => (a.id ? s.p.objects[a.id]?.glowing : s.p.chars[a.who]?.glowing));
       if (!ok) add('glow', { id: a.id, who: a.who }, `${a.id || 'character ' + a.who} should glow but does not`);
@@ -99,6 +104,12 @@ export function repair(plan, failures, round) {
         else b.motion = { ...b.motion, to: undefined, at: { x: b.motion.from?.x || 0, y: 0.15, z: b.motion.from?.z || 0 } };
         note(fl.beat, `"${a.id}": landing target corrected`);
       }
+    } else if (fl.kind === 'perform-unseen') {
+      b.shot = 'wide'; b.shotTarget = 'both'; b.shotTo = null;
+      note(fl.beat, `"${fl.id}": wide shot so the performer is in frame`);
+    } else if (fl.kind === 'perform-static') {
+      b.perform = { ...(b.perform || {}), [fl.id]: round >= 2 ? 'hop' : fl.style };
+      note(fl.beat, `"${fl.id}": action re-applied${round >= 2 ? ' as a hop' : ''}`);
     } else if (fl.kind === 'glow') {
       b.highlight = fl.id ? { prop: fl.id, color: 'orange' } : { who: fl.who, part: 'chest', color: 'red' };
       note(fl.beat, 'glow highlight applied');

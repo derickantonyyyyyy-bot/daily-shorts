@@ -12,6 +12,10 @@ import fs from 'node:fs';
 import { groq, parseJson } from './llm.mjs';
 import { expand } from './parts.mjs';
 import { recipeFor } from './recipes.mjs';
+import { blockify } from './blocks.mjs';
+
+// PROP_STYLE: "blocks" (default) rebuilds every object out of small cubes so it reads at a glance and can move its limbs; "smooth" keeps the primitives.
+const BLOCKS = (process.env.PROP_STYLE || 'blocks').toLowerCase() !== 'smooth';
 
 const script = JSON.parse(fs.readFileSync('work/script.json', 'utf8'));
 
@@ -29,6 +33,7 @@ const FORMAT = `Shapes and size arrays:
   tapered [radiusTop, radiusBottom, height] (cone-like cylinder: torsos, legs, cups, bottles); torus [radius, tube] (rings, handles, wheels, bands);
   wedge [width, height, depth] (triangular prism: fins, wings, roofs, blades).
 "pos" is [x, y, z] of the part's CENTRE relative to the object's base centre (metres, y up, lowest point at y = 0, the front faces +z). "rot" is optional [x, y, z] radians. "color" is "#rrggbb".
+Optionally tag moving parts with "part": "head", "arm", "leg", "wing", "tail", "fin", "wheel" or "ear" (mirror twins keep the tag) so the object can walk, wave or flap.
 Add "mirror": true to a part to automatically create its left/right twin across the x axis (use it for eyes, ears, arms, legs, wheels, wings: describe ONE side only).
 Do not build the object out of boxes alone: combine DIFFERENT shapes so the silhouette is recognisable.
 Reply with JSON only: {"parts":[{"shape":"ellipsoid","size":[0.2,0.2,0.4],"pos":[0,0.45,0],"rot":[0,0,0],"color":"#aa5533","mirror":false}]}`;
@@ -106,7 +111,7 @@ const props = script.props.map((p) => {
   return {
     ...p,
     creature: p.creature ?? recipe.creature,
-    parts: p.parts || designed[p.id] || expand(recipe.parts, 60),
+    parts: BLOCKS && !p.noBlocks ? blockify(p.parts || designed[p.id] || expand(recipe.parts, 60)) : p.parts || designed[p.id] || expand(recipe.parts, 60),
     designedBy: by,
     recipeKind: recipe.kind,
   };
@@ -115,5 +120,5 @@ const props = script.props.map((p) => {
 fs.writeFileSync('work/props.json', JSON.stringify({ props }, null, 2));
 for (const p of props) {
   const shapes = [...new Set(p.parts.map((x) => x.shape))].join('+');
-  console.log(`${p.id} [${p.designedBy}${p.creature ? ', character' : ''}, ${p.parts.length} parts: ${shapes}] ${trails[p.id] || ''}`);
+  console.log(`${p.id} [${p.designedBy}${p.creature ? ', character' : ''}, ${p.parts.length} ${BLOCKS ? 'blocks' : 'parts'}: ${shapes}] ${trails[p.id] || ''}`);
 }

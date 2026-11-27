@@ -267,26 +267,84 @@ function buildProps(list) {
   for (const def of list) {
     const g = new THREE.Group();
     const pm = [];
+    const matBy = {}, geoBy = {}, groups = {}; // shared per colour / size; pivot groups for movable parts
     for (const p of def.parts) {
       const [a, b, c] = p.size;
-      const geo = makeGeo(p.shape, a, b, c);
-      const mat = M(new THREE.Color(p.color).getHex(), 0.65, def.id);
-      pm.push(mat);
+      const gk = p.shape + p.size.join(',');
+      const geo = geoBy[gk] || (geoBy[gk] = makeGeo(p.shape, a, b, c));
+      let mat = matBy[p.color];
+      if (!mat) { mat = matBy[p.color] = M(new THREE.Color(p.color).getHex(), 0.65, def.id); pm.push(mat); }
       const m = mesh(geo, mat, p.pos[0], p.pos[1], p.pos[2]);
       m.rotation.set(p.rot[0], p.rot[1], p.rot[2]);
-      g.add(m);
+      if (p.part && p.part !== 'body') {
+        const side = p.pos[0] < -0.01 ? 'L' : p.pos[0] > 0.01 ? 'R' : 'C';
+        const key = p.part + side + (p.pos[2] > 0.1 ? 'F' : p.pos[2] < -0.1 ? 'B' : 'M'); // front / back pairs of legs swing opposite
+        (groups[key] ||= { part: p.part, side, fb: key.slice(-1), meshes: [] }).meshes.push(m);
+      } else g.add(m);
+    }
+    const rig = [];
+    for (const gr of Object.values(groups)) { // pivot: top of arms, legs, wings, ears, tail; bottom of the head
+      const bb = new THREE.Box3();
+      for (const m of gr.meshes) bb.expandByObject(m);
+      const cx = (bb.min.x + bb.max.x) / 2, cz = (bb.min.z + bb.max.z) / 2;
+      const py = gr.part === 'head' ? bb.min.y : gr.part === 'wing' || gr.part === 'fin' || gr.part === 'wheel' ? (bb.min.y + bb.max.y) / 2 : bb.max.y;
+      const pv = new THREE.Group();
+      pv.position.set(cx, py, cz);
+      for (const m of gr.meshes) { m.position.sub(pv.position); pv.add(m); }
+      g.add(pv);
+      rig.push({ part: gr.part, side: gr.side, fb: gr.fb, node: pv, base: pv.position.clone() });
     }
     const box = new THREE.Box3().setFromObject(g);
     const size = box.getSize(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z, 0.01);
     const home = new THREE.Vector3(def.x, 0, LAYER_Z[def.layer] ?? 0);
     props[def.id] = {
-      def, group: g, home, mats: pm, weight: def.weight, size: maxDim,
+      def, group: g, home, mats: pm, weight: def.weight, size: maxDim, rig,
       heldScale: Math.min(1, 0.45 / maxDim), midY: (box.min.y + box.max.y) / 2,
     };
     g.position.copy(home);
     scene.add(g);
   }
+}
+
+// Block creatures perform: walk, wave, hop, flap, wag, nod, spin, dance, wobble. Returns a pose number used by probe() and QA
+// (sum of how far the limbs are bent plus the lift), so "is it really doing it" can be checked from the page.
+function perform(pr, name, t) {
+  const g = pr.group;
+  let pose = 0;
+  const NEED = { walk: ['leg'], dance: ['leg', 'arm'], wave: ['arm'], flap: ['wing', 'fin'], wag: ['tail'], nod: ['head'] };
+  if (NEED[name] && !pr.rig.some((r) => NEED[name].includes(r.part))) name = 'hop'; // no such limb: the whole object hops instead
+  const sw = (f, a) => Math.sin(t * f) * a;
+  for (const r of pr.rig) {
+    const n = r.node;
+    n.rotation.set(0, 0, 0);
+    const sgn = r.side === 'L' ? -1 : 1;
+    const alt = (r.side === 'L' ? 1 : -1) * (r.fb === 'B' ? -1 : 1); // opposite legs swing against each other
+    let rx = 0, rz = 0, ry = 0;
+    if (name === 'walk' && r.part === 'leg') rx = alt * sw(7, 0.7);
+    else if (name === 'walk' && r.part === 'arm') rx = -alt * sw(7, 0.55);
+    else if (name === 'dance' && r.part === 'leg') rx = alt * sw(9, 0.5);
+    else if (name === 'dance' && r.part === 'arm') rz = sgn * (1.9 + sw(9, 0.5));
+    else if (name === 'wave' && r.part === 'arm' && r.side !== 'L') { rz = sgn * (2.3 + sw(10, 0.35)); }
+    else if (name === 'flap' && (r.part === 'wing' || r.part === 'fin')) rz = sgn * -sw(12, 0.9);
+    else if (name === 'wag' && r.part === 'tail') ry = sw(11, 0.7);
+    else if (name === 'nod' && r.part === 'head') rx = sw(6, 0.35);
+    else if (name === 'hop' && r.part === 'leg') rx = 0;
+    else if (name === 'wobble' && r.part !== 'head') rz = sw(8, 0.12);
+    n.rotation.set(rx, ry, rz);
+    pose += Math.abs(rx) + Math.abs(ry) + Math.abs(rz);
+  }
+  let lift = 0;
+  if (name === 'hop') lift = Math.abs(Math.sin(t * 5)) * 0.3;
+  else if (name === 'walk' || name === 'dance') lift = Math.abs(Math.sin(t * 7)) * 0.04;
+  else if (name === 'flap') lift = 0.1 + Math.abs(sw(6, 0.08));
+  g.position.y += lift;
+  if (name === 'spin') g.rotation.y = t * 3.2;
+  else if (name === 'wobble') g.rotation.z = sw(8, 0.15);
+  else if (name === 'dance') g.rotation.y = sw(3, 0.5);
+  else if (name === 'walk') g.position.x += sw(1.4, 0.35);
+  pr.pose = pose + lift + (name === 'spin' ? 1 : 0) + Math.abs(g.rotation.z);
+  return pr.pose;
 }
 
 // Flight path of a thrown / dropped object (mp 0..1). Shared by the prop placer and the projectile-POV camera.
@@ -732,7 +790,11 @@ function render(t) {
       else if (lay && lay[id]) g.position.set(lay[id].x, lay[id].y || 0, lay[id].z);
       else g.position.copy(pr.home);
     }
-    if (pr.def.creature && g.parent === scene && !mo && g.visible) { // creature-like props idle: bob and sway
+    const doing = beat.perform?.[id];
+    for (const r of pr.rig) r.node.rotation.set(0, 0, 0);
+    pr.pose = 0;
+    if (doing && g.parent === scene && !mo && g.visible) perform(pr, doing, t - beat.start);
+    else if (pr.def.creature && g.parent === scene && !mo && g.visible) { // creature-like props idle: bob and sway
       g.position.y += Math.abs(Math.sin(t * 2.4 + pr.home.x)) * 0.03;
       g.rotation.y = Math.sin(t * 1.3 + pr.home.x) * 0.18;
     }
@@ -881,6 +943,7 @@ window.probe = () => {
       ...(g.visible ? screenInfo(g) : { onScreen: false, frac: 0, size: 0 }),
       pos: [+wp.x.toFixed(2), +wp.y.toFixed(2), +wp.z.toFixed(2)],
       glowing: pr.mats.some((m) => m.emissiveIntensity > 0.05),
+      pose: +(pr.pose || 0).toFixed(3),
     };
   }
   for (const who of ['A', 'B']) {

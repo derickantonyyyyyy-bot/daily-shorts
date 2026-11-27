@@ -82,7 +82,8 @@ export const MATERIALS = ['worn_metal', 'matte_plastic', 'skin_dummy', 'transluc
 const MATERIAL_COLOR = { worn_metal: '#8a9099', matte_plastic: '#c8553d', skin_dummy: '#dcae8f', translucent_blue: '#6fb7e8', wood_oak: '#9b6b3a', concrete: '#8d8d88' };
 export const EXPRESSIONS = ['neutral', 'curious', 'fear', 'pain', 'shock'];
 export const POSES = ['idle_stand', 'lying_flat', 'crouching', 'recoil_back', 'clutching_chest', 'falling'];
-export const ACTIONS = ['static', 'shake_violent', 'drop_gravity', 'slide_inward', 'pulse_glow', 'ragdoll_hit', 'flow_path'];
+import { PERFORMS } from './blocks.mjs';
+export const ACTIONS = ['static', 'shake_violent', 'drop_gravity', 'slide_inward', 'pulse_glow', 'ragdoll_hit', 'flow_path', ...PERFORMS];
 
 // ---------- prompt ----------
 function directory() {
@@ -122,7 +123,7 @@ ${directory()}
 - Use "expression" ONLY on "human_dummy" actors: ${JSON.stringify(EXPRESSIONS)}.
 - Use "pose" ONLY on "human_dummy" actors: ${JSON.stringify(POSES)}.
 - "material" is one of: ${JSON.stringify(MATERIALS)}.
-- Use "action" to tell the renderer how the object moves during the scene: ${JSON.stringify(ACTIONS)}. Use "drop_gravity" for something falling onto a dummy or the floor, "ragdoll_hit" when a dummy is struck and goes limp, "pulse_glow" for the hazard or injured part, "flow_path" for something travelling through (blood, water, a particle). Use drop_gravity, ragdoll_hit, slide_inward or flow_path in at most 3 scenes in the whole video and at most ONE such action per scene (the renderer shows one moving object per scene; everything you list in a scene must really be visible and really do its action, because the finished video is checked against this script).
+- Use "action" to tell the renderer how the object moves during the scene: ${JSON.stringify(ACTIONS)}. Use "drop_gravity" for something falling onto a dummy or the floor, "ragdoll_hit" when a dummy is struck and goes limp, "pulse_glow" for the hazard or injured part, "flow_path" for something travelling through (blood, water, a particle). Use drop_gravity, ragdoll_hit, slide_inward or flow_path in at most 3 scenes in the whole video and at most ONE such action per scene Block creatures and people can also PERFORM: ${JSON.stringify(PERFORMS)} (walk and dance swing the legs, wave lifts an arm, hop jumps, flap beats wings, wag swings the tail, nod bobs the head, spin turns on the spot, wobble sways). Use a perform action for a living or toy-like object that should visibly do something, at most 2 performers per scene (the renderer shows one moving object per scene; everything you list in a scene must really be visible and really do its action, because the finished video is checked against this script).
 - Vary the camera: never use the same camera twice in a row.
 
 ### 4. OUTPUT FORMAT
@@ -304,6 +305,7 @@ export function toScript(bp, summary = '') {
           : { prop: a.id, at: style === 'drop' ? { x: from.x, y: 0.15, z: from.z } : { x: 0, y: 0.3, z: 0.3 }, style, from };
         motions++;
       }
+      if (!a.isDummy && PERFORMS.includes(a.action)) (beat.perform ||= {})[a.id] = a.action;
       if (!sfx && a.action !== 'static' && SFX[a.action] && sfxCount < 6) { sfx = { text: SFX[a.action], seconds: 1 }; sfxCount++; }
     }
     const danger = motion || actors.some((a) => a.action === 'ragdoll_hit');
@@ -329,6 +331,7 @@ export function toScript(bp, summary = '') {
     for (const a of actors) {
       if (a.action === 'pulse_glow') expect.actions.push(a.isDummy ? { kind: 'glow', who: a.who } : { kind: 'glow', id: a.id });
       if (a.action === 'shake_violent') expect.actions.push({ kind: 'shake' });
+      if (!a.isDummy && PERFORMS.includes(a.action)) expect.actions.push({ kind: 'perform', id: a.id, style: a.action });
       if (a.action === 'ragdoll_hit' && a.isDummy) expect.actions.push({ kind: 'ragdoll', who: a.who });
       if (!a.isDummy && MOTION_ACTIONS.includes(a.action) && !(motion && motion.prop === a.id)) expect.dropped.push({ kind: 'motion', id: a.id, action: a.action });
     }
@@ -346,6 +349,7 @@ export function toScript(bp, summary = '') {
       shot: sh.shot, shotTarget: sh.target, shotTo: sh.to || null, shotPart: sh.part || 'chest', shotWho: 'A',
       ramp, motion, highlight, sfx,
       shake: beat.shake || undefined,
+      perform: beat.perform,
       layout, charLayout, expect,
       wall: P.wall, floor: P.floor, place: sc.place, camera: sc.camera,
     };
@@ -365,7 +369,7 @@ export function toScript(bp, summary = '') {
     props.push({
       id: `set_${place}`, name: `${place.replace(/_/g, ' ')} set`, purpose: 'set dressing',
       layer: 'midground', x: 0, holdable: false, weight: 0,
-      parts: PLACES[place].dressing,
+      parts: PLACES[place].dressing, noBlocks: true,
     });
   }
 

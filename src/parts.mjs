@@ -14,6 +14,7 @@ export function cleanPart(p) {
     rot: [0, 1, 2].map((i) => num(p.rot?.[i], 0, -6.3, 6.3)),
     color: /^#[0-9a-fA-F]{6}$/.test(String(p.color)) ? p.color : '#888888',
     mirror: Boolean(p.mirror),
+    ...(typeof p.part === 'string' && /^[a-z]{2,10}$/.test(p.part) ? { part: p.part } : {}),
   };
 }
 
