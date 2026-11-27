@@ -1,6 +1,6 @@
 {
-  "title": "The Hidden Snap Inside a Click Pen",
-  "description": "A ballpoint pen rests, tip gleaming on the desk.",
+  "title": "The Pen That Packs a Punch",
+  "description": "A simple click, a pen in focus.",
   "tags": [
     "edutainment",
     "science",
@@ -8,8 +8,8 @@
     "shorts",
     "studio",
     "elevator",
-    "hospital",
     "human",
+    "locked",
     "street"
   ],
   "characters": {
@@ -32,9 +32,9 @@
   },
   "props": [
     {
-      "id": "pen_01",
+      "id": "pen1",
       "name": "metal cylinder",
-      "purpose": "appears in the line: \"A ballpoint pen rests, tip gleaming on the desk.\"",
+      "purpose": "appears in the line: \"A simple click, a pen in focus.\"",
       "material": "worn_metal",
       "color": "#8a9099",
       "creature": false,
@@ -44,9 +44,9 @@
       "weight": 0.3
     },
     {
-      "id": "spring_01",
+      "id": "spring1",
       "name": "metal cylinder",
-      "purpose": "appears in the line: \"When you press the click, the spring unleashes a micro‑burst.\"",
+      "purpose": "appears in the line: \"Inside, a tiny spring stores kinetic energy.\"",
       "material": "worn_metal",
       "color": "#8a9099",
       "creature": false,
@@ -56,21 +56,9 @@
       "weight": 0.3
     },
     {
-      "id": "ink_blob",
-      "name": "sphere particle",
-      "purpose": "appears in the line: \"The ball jerks, pushing ink forward.\"",
-      "material": "matte_plastic",
-      "color": "#c8553d",
-      "creature": false,
-      "layer": "midground",
-      "x": 0,
-      "holdable": false,
-      "weight": 0.3
-    },
-    {
-      "id": "coil_cut",
+      "id": "pen_cap",
       "name": "metal cylinder",
-      "purpose": "appears in the line: \"Inside the pen, the coil compresses, then rebounds instantly.\"",
+      "purpose": "appears in the line: \"The spring releases, snapping the pen cap outward.\"",
       "material": "worn_metal",
       "color": "#8a9099",
       "creature": false,
@@ -80,11 +68,11 @@
       "weight": 0.3
     },
     {
-      "id": "energy_glyph",
+      "id": "sand_grain",
       "name": "sphere particle",
-      "purpose": "appears in the line: \"The released energy equals about half a millijoule, microscopic yet real.\"",
-      "material": "translucent_blue",
-      "color": "#6fb7e8",
+      "purpose": "appears in the line: \"That impulse equals the energy of a falling grain of sand.\"",
+      "material": "concrete",
+      "color": "#8d8d88",
       "creature": false,
       "layer": "midground",
       "x": 0,
@@ -92,11 +80,11 @@
       "weight": 0.3
     },
     {
-      "id": "dust_01",
-      "name": "sphere particle",
-      "purpose": "appears in the line: \"Dust trembles from the tiny burst.\"",
-      "material": "matte_plastic",
-      "color": "#c8553d",
+      "id": "latch_mechanism",
+      "name": "metal cylinder",
+      "purpose": "appears in the line: \"Manufacturers add a safety latch to keep the cap contained.\"",
+      "material": "worn_metal",
+      "color": "#8a9099",
       "creature": false,
       "layer": "midground",
       "x": 0,
@@ -154,8 +142,8 @@
       "noBlocks": true
     },
     {
-      "id": "set_hospital_room",
-      "name": "hospital room set",
+      "id": "set_locked_doorway",
+      "name": "locked doorway set",
       "purpose": "set dressing",
       "layer": "midground",
       "x": 0,
@@ -165,77 +153,78 @@
         {
           "shape": "box",
           "size": [
+            1.4,
             2.6,
-            0.5,
-            1.1
-          ],
-          "pos": [
-            0,
-            0.7,
-            -0.3
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "color": "#e8eef0"
-        },
-        {
-          "shape": "box",
-          "size": [
-            0.5,
-            0.8,
-            0.5
-          ],
-          "pos": [
-            1.5,
-            0.4,
-            -0.5
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "color": "#cfd6d9"
-        },
-        {
-          "shape": "cylinder",
-          "size": [
-            0.04,
-            1.3
-          ],
-          "pos": [
-            1.6,
-            0.65,
-            -1.5
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "color": "#555b60"
-        },
-        {
-          "shape": "box",
-          "size": [
-            0.5,
-            0.35,
             0.1
           ],
           "pos": [
-            1.6,
-            1.45,
-            -1.5
+            0,
+            1.3,
+            -1.6
           ],
           "rot": [
             0,
             0,
             0
           ],
-          "color": "#1d2a33"
+          "color": "#8b5a2b"
+        },
+        {
+          "shape": "box",
+          "size": [
+            0.15,
+            2.8,
+            0.2
+          ],
+          "pos": [
+            -0.8,
+            1.4,
+            -1.6
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "color": "#8d8d88"
+        },
+        {
+          "shape": "box",
+          "size": [
+            0.15,
+            2.8,
+            0.2
+          ],
+          "pos": [
+            0.8,
+            1.4,
+            -1.6
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "color": "#8d8d88"
+        },
+        {
+          "shape": "box",
+          "size": [
+            1.2,
+            0.03,
+            0.7
+          ],
+          "pos": [
+            0,
+            0.015,
+            -0.4
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "color": "#3a3a3a"
         }
       ],
       "noBlocks": true
@@ -387,62 +376,15 @@
   ],
   "beats": [
     {
-      "text": "A ballpoint pen rests, tip gleaming on the desk.",
-      "action": "studio_void: metal_cylinder@center_floor",
-      "poseA": "calm",
+      "text": "A simple click, a pen in focus.",
+      "action": "studio_void: metal_cylinder@right_stand, human_dummy@left_stand",
+      "poseA": "curious",
       "poseB": "calm",
-      "lookA": "pen_01",
-      "lookB": "pen_01",
+      "lookA": "pen1",
+      "lookB": "pen1",
       "holdA": null,
       "holdB": null,
-      "focus": "both",
-      "shot": "hazard_ecu",
-      "shotTarget": "pen_01",
-      "shotTo": null,
-      "shotPart": "chest",
-      "shotWho": "A",
-      "ramp": false,
-      "motion": null,
-      "highlight": null,
-      "sfx": null,
-      "layout": {
-        "pen_01": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        }
-      },
-      "charLayout": {
-        "A": {
-          "visible": false
-        },
-        "B": {
-          "visible": false
-        }
-      },
-      "expect": {
-        "objects": [
-          "pen_01"
-        ],
-        "chars": [],
-        "actions": [],
-        "dropped": []
-      },
-      "wall": "#d9dde0",
-      "floor": "#c4c9cd",
-      "place": "studio_void",
-      "camera": "CAM_CLOSEUP_CENTER"
-    },
-    {
-      "text": "You think it'll just glide across paper, nothing else.",
-      "action": "studio_void: metal_cylinder@center_floor",
-      "poseA": "calm",
-      "poseB": "calm",
-      "lookA": "pen_01",
-      "lookB": "pen_01",
-      "holdA": null,
-      "holdB": null,
-      "focus": "both",
+      "focus": "A",
       "shot": "wide",
       "shotTarget": "both",
       "shotTo": null,
@@ -453,15 +395,18 @@
       "highlight": null,
       "sfx": null,
       "layout": {
-        "pen_01": {
-          "x": 0,
+        "pen1": {
+          "x": 1.1,
           "y": 0,
           "z": 0
         }
       },
       "charLayout": {
         "A": {
-          "visible": false
+          "visible": true,
+          "x": -1.1,
+          "y": 0,
+          "z": 0
         },
         "B": {
           "visible": false
@@ -469,9 +414,11 @@
       },
       "expect": {
         "objects": [
-          "pen_01"
+          "pen1"
         ],
-        "chars": [],
+        "chars": [
+          "A"
+        ],
         "actions": [],
         "dropped": []
       },
@@ -481,108 +428,29 @@
       "camera": "CAM_WIDE_FRONT"
     },
     {
-      "text": "But a hidden spring stores energy, ready to snap.",
-      "action": "studio_void: metal_cylinder@center_floor (pulse_glow)",
+      "text": "You expect it just to write smoothly.",
+      "action": "elevator_interior: metal_cylinder@panel_right, human_dummy@floor_center",
       "poseA": "calm",
       "poseB": "calm",
-      "lookA": "pen_01",
-      "lookB": "pen_01",
+      "lookA": "pen1",
+      "lookB": "pen1",
       "holdA": null,
       "holdB": null,
-      "focus": "both",
-      "shot": "wide",
-      "shotTarget": "pen_01",
+      "focus": "A",
+      "shot": "suspense",
+      "shotTarget": "A",
       "shotTo": null,
       "shotPart": "chest",
       "shotWho": "A",
       "ramp": false,
       "motion": null,
-      "highlight": {
-        "prop": "pen_01",
-        "color": "orange"
-      },
-      "sfx": {
-        "text": "electric hum pulsing",
-        "seconds": 1
-      },
-      "layout": {
-        "pen_01": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        }
-      },
-      "charLayout": {
-        "A": {
-          "visible": false
-        },
-        "B": {
-          "visible": false
-        }
-      },
-      "expect": {
-        "objects": [
-          "pen_01"
-        ],
-        "chars": [],
-        "actions": [
-          {
-            "kind": "glow",
-            "id": "pen_01"
-          }
-        ],
-        "dropped": []
-      },
-      "wall": "#d9dde0",
-      "floor": "#c4c9cd",
-      "place": "studio_void",
-      "camera": "CAM_MEDIUM_ACTOR"
-    },
-    {
-      "text": "When you press the click, the spring unleashes a micro‑burst.",
-      "action": "elevator_interior: metal_cylinder@floor_center (slide_inward), metal_cylinder@floor_center",
-      "poseA": "calm",
-      "poseB": "calm",
-      "lookA": "spring_01",
-      "lookB": "spring_01",
-      "holdA": null,
-      "holdB": null,
-      "focus": "both",
-      "shot": "suspense",
-      "shotTarget": "spring_01",
-      "shotTo": null,
-      "shotPart": "chest",
-      "shotWho": "A",
-      "ramp": true,
-      "motion": {
-        "prop": "spring_01",
-        "at": {
-          "x": 0,
-          "y": 0.3,
-          "z": 0.3
-        },
-        "style": "fly",
-        "from": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        }
-      },
       "highlight": null,
-      "sfx": {
-        "text": "metal scraping slide",
-        "seconds": 1
-      },
+      "sfx": null,
       "layout": {
-        "spring_01": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "pen_01": {
-          "x": 0.4,
-          "y": 0,
-          "z": 0
+        "pen1": {
+          "x": 1.5,
+          "y": 1.3,
+          "z": -1.45
         },
         "set_elevator_interior": {
           "x": 0,
@@ -592,7 +460,10 @@
       },
       "charLayout": {
         "A": {
-          "visible": false
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "z": 0
         },
         "B": {
           "visible": false
@@ -600,29 +471,12 @@
       },
       "expect": {
         "objects": [
-          "spring_01",
-          "pen_01"
+          "pen1"
         ],
-        "chars": [],
-        "actions": [
-          {
-            "kind": "motion",
-            "id": "spring_01",
-            "style": "fly",
-            "to": null,
-            "at": {
-              "x": 0,
-              "y": 0.3,
-              "z": 0.3
-            },
-            "part": "chest",
-            "from": {
-              "x": 0,
-              "y": 0,
-              "z": 0
-            }
-          }
+        "chars": [
+          "A"
         ],
+        "actions": [],
         "dropped": []
       },
       "wall": "#8d9399",
@@ -631,219 +485,24 @@
       "camera": "CAM_CORNER_HIGH"
     },
     {
-      "text": "The ball jerks, pushing ink forward.",
-      "action": "elevator_interior: sphere_particle@floor_center (drop_gravity)",
+      "text": "Inside, a tiny spring stores kinetic energy.",
+      "action": "human_anatomy_cutaway: metal_cylinder@throat_pipe (pulse_glow)",
       "poseA": "calm",
       "poseB": "calm",
-      "lookA": "ink_blob",
-      "lookB": "ink_blob",
-      "holdA": null,
-      "holdB": null,
-      "focus": "both",
-      "shot": "worm_eye",
-      "shotTarget": "ink_blob",
-      "shotTo": null,
-      "shotPart": "chest",
-      "shotWho": "A",
-      "ramp": true,
-      "motion": {
-        "prop": "ink_blob",
-        "at": {
-          "x": 0,
-          "y": 0.15,
-          "z": 0
-        },
-        "style": "drop",
-        "from": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        }
-      },
-      "highlight": null,
-      "sfx": {
-        "text": "heavy object crash and thud",
-        "seconds": 1
-      },
-      "layout": {
-        "ink_blob": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "set_elevator_interior": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        }
-      },
-      "charLayout": {
-        "A": {
-          "visible": false
-        },
-        "B": {
-          "visible": false
-        }
-      },
-      "expect": {
-        "objects": [
-          "ink_blob"
-        ],
-        "chars": [],
-        "actions": [
-          {
-            "kind": "motion",
-            "id": "ink_blob",
-            "style": "drop",
-            "to": null,
-            "at": {
-              "x": 0,
-              "y": 0.15,
-              "z": 0
-            },
-            "part": "chest",
-            "from": {
-              "x": 0,
-              "y": 0,
-              "z": 0
-            }
-          }
-        ],
-        "dropped": []
-      },
-      "wall": "#8d9399",
-      "floor": "#5d6166",
-      "place": "elevator_interior",
-      "camera": "CAM_LOW_FLOOR"
-    },
-    {
-      "text": "That pop sends a tiny pressure wave into your fingertip.",
-      "action": "hospital_room: human_dummy@side_table",
-      "poseA": "curious",
-      "poseB": "calm",
-      "lookA": "camera",
-      "lookB": "camera",
+      "lookA": "spring1",
+      "lookB": "spring1",
       "holdA": null,
       "holdB": null,
       "focus": "A",
-      "shot": "wide",
-      "shotTarget": "both",
-      "shotTo": null,
-      "shotPart": "chest",
-      "shotWho": "A",
-      "ramp": false,
-      "motion": null,
-      "highlight": null,
-      "sfx": null,
-      "layout": {
-        "set_hospital_room": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        }
-      },
-      "charLayout": {
-        "A": {
-          "visible": true,
-          "x": 1.5,
-          "y": 0.8,
-          "z": -0.5
-        },
-        "B": {
-          "visible": false
-        }
-      },
-      "expect": {
-        "objects": [],
-        "chars": [
-          "A"
-        ],
-        "actions": [],
-        "dropped": []
-      },
-      "wall": "#dfe9e8",
-      "floor": "#b9c7c6",
-      "place": "hospital_room",
-      "camera": "CAM_WIDE_ROOM"
-    },
-    {
-      "text": "Your skin feels a brief sting.",
-      "action": "hospital_room: human_dummy@side_table (ragdoll_hit)",
-      "poseA": "collapse",
-      "poseB": "calm",
-      "lookA": "camera",
-      "lookB": "camera",
-      "holdA": null,
-      "holdB": null,
-      "focus": "A",
-      "shot": "crash_zoom",
+      "shot": "cutaway",
       "shotTarget": "A",
       "shotTo": null,
-      "shotPart": "chest",
-      "shotWho": "A",
-      "ramp": false,
-      "motion": null,
-      "highlight": null,
-      "sfx": {
-        "text": "dull body impact thud",
-        "seconds": 1
-      },
-      "shake": 0.06,
-      "layout": {
-        "set_hospital_room": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        }
-      },
-      "charLayout": {
-        "A": {
-          "visible": true,
-          "x": 1.5,
-          "y": 0.8,
-          "z": -0.5
-        },
-        "B": {
-          "visible": false
-        }
-      },
-      "expect": {
-        "objects": [],
-        "chars": [
-          "A"
-        ],
-        "actions": [
-          {
-            "kind": "ragdoll",
-            "who": "A"
-          }
-        ],
-        "dropped": []
-      },
-      "wall": "#dfe9e8",
-      "floor": "#b9c7c6",
-      "place": "hospital_room",
-      "camera": "CAM_CLOSEUP_PATIENT"
-    },
-    {
-      "text": "Inside the pen, the coil compresses, then rebounds instantly.",
-      "action": "human_anatomy_cutaway: metal_cylinder@bloodstream (pulse_glow)",
-      "poseA": "calm",
-      "poseB": "calm",
-      "lookA": "coil_cut",
-      "lookB": "coil_cut",
-      "holdA": null,
-      "holdB": null,
-      "focus": "A",
-      "shot": "xray",
-      "shotTarget": "A",
-      "shotTo": null,
-      "shotPart": "arm",
+      "shotPart": "head",
       "shotWho": "A",
       "ramp": false,
       "motion": null,
       "highlight": {
-        "prop": "coil_cut",
+        "prop": "spring1",
         "color": "red"
       },
       "sfx": {
@@ -851,9 +510,9 @@
         "seconds": 1
       },
       "layout": {
-        "coil_cut": {
-          "x": -0.32,
-          "y": 1.35,
+        "spring1": {
+          "x": 0,
+          "y": 2.02,
           "z": 0.05
         }
       },
@@ -870,7 +529,7 @@
       },
       "expect": {
         "objects": [
-          "coil_cut"
+          "spring1"
         ],
         "chars": [
           "A"
@@ -878,65 +537,8 @@
         "actions": [
           {
             "kind": "glow",
-            "id": "coil_cut"
+            "id": "spring1"
           },
-          {
-            "kind": "cutaway",
-            "who": "A"
-          }
-        ],
-        "dropped": []
-      },
-      "wall": "#10151c",
-      "floor": "#1d2430",
-      "place": "human_anatomy_cutaway",
-      "camera": "CAM_MACRO_ORGAN"
-    },
-    {
-      "text": "The released energy equals about half a millijoule, microscopic yet real.",
-      "action": "human_anatomy_cutaway: sphere_particle@bloodstream",
-      "poseA": "calm",
-      "poseB": "calm",
-      "lookA": "energy_glyph",
-      "lookB": "energy_glyph",
-      "holdA": null,
-      "holdB": null,
-      "focus": "A",
-      "shot": "cutaway",
-      "shotTarget": "A",
-      "shotTo": null,
-      "shotPart": "arm",
-      "shotWho": "A",
-      "ramp": false,
-      "motion": null,
-      "highlight": null,
-      "sfx": null,
-      "layout": {
-        "energy_glyph": {
-          "x": -0.32,
-          "y": 1.35,
-          "z": 0.05
-        }
-      },
-      "charLayout": {
-        "A": {
-          "visible": true,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "B": {
-          "visible": false
-        }
-      },
-      "expect": {
-        "objects": [
-          "energy_glyph"
-        ],
-        "chars": [
-          "A"
-        ],
-        "actions": [
           {
             "kind": "cutaway",
             "who": "A"
@@ -950,17 +552,17 @@
       "camera": "CAM_TORSO_FRONT"
     },
     {
-      "text": "Dust trembles from the tiny burst.",
-      "action": "street_crosswalk: sphere_particle@crosswalk_center (wobble)",
-      "poseA": "calm",
+      "text": "Press the click, the spring compresses instantly.",
+      "action": "studio_void: metal_cylinder@center_floor, human_dummy@center_floor",
+      "poseA": "curious",
       "poseB": "calm",
-      "lookA": "dust_01",
-      "lookB": "dust_01",
+      "lookA": "pen1",
+      "lookB": "pen1",
       "holdA": null,
       "holdB": null,
-      "focus": "both",
+      "focus": "A",
       "shot": "wide",
-      "shotTarget": "both",
+      "shotTarget": "A",
       "shotTo": null,
       "shotPart": "chest",
       "shotWho": "A",
@@ -968,14 +570,233 @@
       "motion": null,
       "highlight": null,
       "sfx": null,
-      "perform": {
-        "dust_01": "wobble"
-      },
       "layout": {
-        "dust_01": {
+        "pen1": {
           "x": 0,
           "y": 0,
-          "z": 0.2
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "pen1"
+        ],
+        "chars": [
+          "A"
+        ],
+        "actions": [],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_MEDIUM_ACTOR"
+    },
+    {
+      "text": "The spring releases, snapping the pen cap outward.",
+      "action": "elevator_interior: metal_cylinder@panel_right (drop_gravity)",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "pen_cap",
+      "lookB": "pen_cap",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "worm_eye",
+      "shotTarget": "pen_cap",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": true,
+      "motion": {
+        "prop": "pen_cap",
+        "at": {
+          "x": 1.5,
+          "y": 0.15,
+          "z": -1.45
+        },
+        "style": "drop",
+        "from": {
+          "x": 1.5,
+          "y": 1.3,
+          "z": -1.45
+        }
+      },
+      "highlight": null,
+      "sfx": {
+        "text": "heavy object crash and thud",
+        "seconds": 1
+      },
+      "layout": {
+        "pen_cap": {
+          "x": 1.5,
+          "y": 1.3,
+          "z": -1.45
+        },
+        "set_elevator_interior": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "pen_cap"
+        ],
+        "chars": [],
+        "actions": [
+          {
+            "kind": "motion",
+            "id": "pen_cap",
+            "style": "drop",
+            "to": null,
+            "at": {
+              "x": 1.5,
+              "y": 0.15,
+              "z": -1.45
+            },
+            "part": "chest",
+            "from": {
+              "x": 1.5,
+              "y": 1.3,
+              "z": -1.45
+            }
+          }
+        ],
+        "dropped": []
+      },
+      "wall": "#8d9399",
+      "floor": "#5d6166",
+      "place": "elevator_interior",
+      "camera": "CAM_LOW_FLOOR"
+    },
+    {
+      "text": "Cap flies at three meters per second, startling nearby fingers.",
+      "action": "locked_doorway: metal_cylinder@door_handle (ragdoll_hit), human_dummy@latch_gap",
+      "poseA": "calm",
+      "poseB": "shock",
+      "lookA": "pen_cap",
+      "lookB": "pen_cap",
+      "holdA": null,
+      "holdB": null,
+      "focus": "B",
+      "shot": "wide",
+      "shotTarget": "both",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": true,
+      "motion": {
+        "prop": "pen_cap",
+        "to": "B",
+        "part": "chest",
+        "style": "fly",
+        "from": {
+          "x": 0.55,
+          "y": 1.15,
+          "z": -1.4
+        }
+      },
+      "highlight": null,
+      "sfx": {
+        "text": "dull body impact thud",
+        "seconds": 1
+      },
+      "layout": {
+        "pen_cap": {
+          "x": 0.55,
+          "y": 1.15,
+          "z": -1.4
+        },
+        "set_locked_doorway": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": true,
+          "x": 0.5,
+          "y": 1.1,
+          "z": -1.5
+        }
+      },
+      "expect": {
+        "objects": [
+          "pen_cap"
+        ],
+        "chars": [
+          "B"
+        ],
+        "actions": [
+          {
+            "kind": "motion",
+            "id": "pen_cap",
+            "style": "fly",
+            "to": "B",
+            "at": null,
+            "part": "chest",
+            "from": {
+              "x": 0.55,
+              "y": 1.15,
+              "z": -1.4
+            }
+          }
+        ],
+        "dropped": []
+      },
+      "wall": "#7d7a75",
+      "floor": "#5a5855",
+      "place": "locked_doorway",
+      "camera": "CAM_EYE_LEVEL_DOOR"
+    },
+    {
+      "text": "That impulse equals the energy of a falling grain of sand.",
+      "action": "street_crosswalk: sphere_particle@lane_oncoming",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "sand_grain",
+      "lookB": "sand_grain",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "hazard_ecu",
+      "shotTarget": "sand_grain",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "sand_grain": {
+          "x": 1.2,
+          "y": 0,
+          "z": -3
         },
         "set_street_crosswalk": {
           "x": 0,
@@ -993,22 +814,182 @@
       },
       "expect": {
         "objects": [
-          "dust_01"
+          "sand_grain"
         ],
         "chars": [],
-        "actions": [
-          {
-            "kind": "perform",
-            "id": "dust_01",
-            "style": "wobble"
-          }
-        ],
+        "actions": [],
         "dropped": []
       },
       "wall": "#9fb4c8",
       "floor": "#3b3d40",
       "place": "street_crosswalk",
-      "camera": "CAM_STREET_WIDE"
+      "camera": "CAM_DRIVER_POV"
+    },
+    {
+      "text": "If the spring fails, the cap can pierce skin.",
+      "action": "human_anatomy_cutaway: metal_cylinder@stomach (pulse_glow)",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "pen_cap",
+      "lookB": "pen_cap",
+      "holdA": null,
+      "holdB": null,
+      "focus": "A",
+      "shot": "xray",
+      "shotTarget": "A",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": {
+        "prop": "pen_cap",
+        "color": "red"
+      },
+      "sfx": {
+        "text": "electric hum pulsing",
+        "seconds": 1
+      },
+      "layout": {
+        "pen_cap": {
+          "x": 0,
+          "y": 1.35,
+          "z": 0.12
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "pen_cap"
+        ],
+        "chars": [
+          "A"
+        ],
+        "actions": [
+          {
+            "kind": "glow",
+            "id": "pen_cap"
+          },
+          {
+            "kind": "cutaway",
+            "who": "A"
+          }
+        ],
+        "dropped": []
+      },
+      "wall": "#10151c",
+      "floor": "#1d2430",
+      "place": "human_anatomy_cutaway",
+      "camera": "CAM_MACRO_ORGAN"
+    },
+    {
+      "text": "Manufacturers add a safety latch to keep the cap contained.",
+      "action": "locked_doorway: metal_cylinder@latch_gap",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "latch_mechanism",
+      "lookB": "latch_mechanism",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "hazard_ecu",
+      "shotTarget": "latch_mechanism",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "latch_mechanism": {
+          "x": 0.5,
+          "y": 1.1,
+          "z": -1.5
+        },
+        "set_locked_doorway": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "latch_mechanism"
+        ],
+        "chars": [],
+        "actions": [],
+        "dropped": []
+      },
+      "wall": "#7d7a75",
+      "floor": "#5a5855",
+      "place": "locked_doorway",
+      "camera": "CAM_MACRO_LATCH"
+    },
+    {
+      "text": "Even a humble pen hides a micro‑explosive spring inside.",
+      "action": "studio_void: metal_cylinder@overhead_drop",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "pen1",
+      "lookB": "pen1",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "hazard_ecu",
+      "shotTarget": "pen1",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "pen1": {
+          "x": 0,
+          "y": 4.2,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "pen1"
+        ],
+        "chars": [],
+        "actions": [],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_CLOSEUP_CENTER"
     }
   ]
 }
