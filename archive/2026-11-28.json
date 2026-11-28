@@ -1,0 +1,599 @@
+{
+  "title": "Microwave Water Superheat Explosion",
+  "description": "A clear mug of water sits on the microwave.",
+  "tags": [
+    "edutainment",
+    "science",
+    "facts",
+    "shorts",
+    "studio",
+    "human"
+  ],
+  "characters": {
+    "A": {
+      "name": "Dummy A",
+      "role": "",
+      "attitude": ""
+    },
+    "B": {
+      "name": "Dummy B",
+      "role": "",
+      "attitude": ""
+    }
+  },
+  "relationship": "",
+  "setting": {
+    "name": "studio_void",
+    "wall": "#d9dde0",
+    "floor": "#c4c9cd"
+  },
+  "props": [
+    {
+      "id": "obj_mug",
+      "name": "metal cylinder",
+      "purpose": "appears in the line: \"A clear mug of water sits on the microwave.\"",
+      "material": "matte_plastic",
+      "color": "#c8553d",
+      "creature": false,
+      "layer": "midground",
+      "x": 0,
+      "holdable": false,
+      "weight": 0.3
+    },
+    {
+      "id": "obj_water",
+      "name": "sphere particle",
+      "purpose": "appears in the line: \"Heat forces molecules to jitter faster, building pressure beyond visible bubbles inside.\"",
+      "material": "translucent_blue",
+      "color": "#6fb7e8",
+      "creature": false,
+      "layer": "midground",
+      "x": 0,
+      "holdable": false,
+      "weight": 0.3
+    },
+    {
+      "id": "obj_blood",
+      "name": "sphere particle",
+      "purpose": "appears in the line: \"Blood rushes to the wound, carrying heat and inflammatory messengers outward quickly.\"",
+      "material": "translucent_blue",
+      "color": "#6fb7e8",
+      "creature": false,
+      "layer": "midground",
+      "x": 0,
+      "holdable": false,
+      "weight": 0.3
+    }
+  ],
+  "beats": [
+    {
+      "text": "A clear mug of water sits on the microwave.",
+      "action": "studio_void: metal_cylinder@center_floor",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "obj_mug",
+      "lookB": "obj_mug",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "both",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "obj_mug": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "obj_mug"
+        ],
+        "chars": [],
+        "actions": [],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_WIDE_FRONT"
+    },
+    {
+      "text": "You expect it to warm gently, no fuss.",
+      "action": "studio_void: metal_cylinder@center_floor",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "obj_mug",
+      "lookB": "obj_mug",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "obj_mug",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "obj_mug": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "obj_mug"
+        ],
+        "chars": [],
+        "actions": [],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_MEDIUM_ACTOR"
+    },
+    {
+      "text": "But it can superheat silently, then explode.",
+      "action": "studio_void: metal_cylinder@center_floor",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "obj_mug",
+      "lookB": "obj_mug",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "hazard_ecu",
+      "shotTarget": "obj_mug",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "obj_mug": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "obj_mug"
+        ],
+        "chars": [],
+        "actions": [],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_CLOSEUP_CENTER"
+    },
+    {
+      "text": "Heat forces molecules to jitter faster, building pressure beyond visible bubbles inside.",
+      "action": "studio_void: sphere_particle@right_stand (pulse_glow)",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "obj_water",
+      "lookB": "obj_water",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "both",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": {
+        "prop": "obj_water",
+        "color": "orange"
+      },
+      "sfx": {
+        "text": "electric hum pulsing",
+        "seconds": 1
+      },
+      "layout": {
+        "obj_water": {
+          "x": 1.1,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "obj_water"
+        ],
+        "chars": [],
+        "actions": [
+          {
+            "kind": "glow",
+            "id": "obj_water"
+          }
+        ],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_WIDE_FRONT"
+    },
+    {
+      "text": "The mug's glass can't expand, so pressure squeezes the thin walls until failure.",
+      "action": "studio_void: metal_cylinder@center_floor",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "obj_mug",
+      "lookB": "obj_mug",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "hazard_ecu",
+      "shotTarget": "obj_mug",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "obj_mug": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "obj_mug"
+        ],
+        "chars": [],
+        "actions": [],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_CLOSEUP_CENTER"
+    },
+    {
+      "text": "Suddenly, boiling water erupts, scalding everything nearby.",
+      "action": "studio_void: human_dummy@left_stand (ragdoll_hit)",
+      "poseA": "collapse",
+      "poseB": "calm",
+      "lookA": "camera",
+      "lookB": "camera",
+      "holdA": null,
+      "holdB": null,
+      "focus": "A",
+      "shot": "wide",
+      "shotTarget": "both",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": true,
+      "motion": null,
+      "highlight": null,
+      "sfx": {
+        "text": "dull body impact thud",
+        "seconds": 1
+      },
+      "shake": 0.06,
+      "layout": {},
+      "charLayout": {
+        "A": {
+          "visible": true,
+          "x": -1.1,
+          "y": 0,
+          "z": 0
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [],
+        "chars": [
+          "A"
+        ],
+        "actions": [
+          {
+            "kind": "ragdoll",
+            "who": "A"
+          }
+        ],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_WIDE_FRONT"
+    },
+    {
+      "text": "A startled hand flails, splashing hot droplets across the lab bench.",
+      "action": "studio_void: human_dummy@left_stand",
+      "poseA": "curious",
+      "poseB": "calm",
+      "lookA": "camera",
+      "lookB": "camera",
+      "holdA": null,
+      "holdB": null,
+      "focus": "A",
+      "shot": "wide",
+      "shotTarget": "A",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {},
+      "charLayout": {
+        "A": {
+          "visible": true,
+          "x": -1.1,
+          "y": 0,
+          "z": 0
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [],
+        "chars": [
+          "A"
+        ],
+        "actions": [],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_MEDIUM_ACTOR"
+    },
+    {
+      "text": "Steam penetrates skin, vaporizing cells and triggering pain signals instantly to the brain.",
+      "action": "human_anatomy_cutaway: human_dummy@stomach",
+      "poseA": "collapse",
+      "poseB": "calm",
+      "lookA": "camera",
+      "lookB": "camera",
+      "holdA": null,
+      "holdB": null,
+      "focus": "A",
+      "shot": "cutaway",
+      "shotTarget": "A",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {},
+      "charLayout": {
+        "A": {
+          "visible": true,
+          "x": 0.32,
+          "y": 0,
+          "z": 0
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [],
+        "chars": [
+          "A"
+        ],
+        "actions": [
+          {
+            "kind": "cutaway",
+            "who": "A"
+          }
+        ],
+        "dropped": []
+      },
+      "wall": "#10151c",
+      "floor": "#1d2430",
+      "place": "human_anatomy_cutaway",
+      "camera": "CAM_TORSO_FRONT"
+    },
+    {
+      "text": "Blood rushes to the wound, carrying heat and inflammatory messengers outward quickly.",
+      "action": "human_anatomy_cutaway: sphere_particle@bloodstream (flow_path)",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "obj_blood",
+      "lookB": "obj_blood",
+      "holdA": null,
+      "holdB": null,
+      "focus": "A",
+      "shot": "xray",
+      "shotTarget": "A",
+      "shotTo": null,
+      "shotPart": "arm",
+      "shotWho": "A",
+      "ramp": true,
+      "motion": {
+        "prop": "obj_blood",
+        "at": {
+          "x": -0.32,
+          "y": 0.45,
+          "z": 0.05
+        },
+        "style": "flow",
+        "from": {
+          "x": -0.32,
+          "y": 1.35,
+          "z": 0.05
+        }
+      },
+      "highlight": null,
+      "sfx": {
+        "text": "liquid whoosh rushing past",
+        "seconds": 1
+      },
+      "layout": {
+        "obj_blood": {
+          "x": -0.32,
+          "y": 1.35,
+          "z": 0.05
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "obj_blood"
+        ],
+        "chars": [
+          "A"
+        ],
+        "actions": [
+          {
+            "kind": "motion",
+            "id": "obj_blood",
+            "style": "flow",
+            "to": null,
+            "at": {
+              "x": -0.32,
+              "y": 0.45,
+              "z": 0.05
+            },
+            "part": "chest",
+            "from": {
+              "x": -0.32,
+              "y": 1.35,
+              "z": 0.05
+            }
+          },
+          {
+            "kind": "cutaway",
+            "who": "A"
+          }
+        ],
+        "dropped": []
+      },
+      "wall": "#10151c",
+      "floor": "#1d2430",
+      "place": "human_anatomy_cutaway",
+      "camera": "CAM_MACRO_ORGAN"
+    },
+    {
+      "text": "Superheated water can exceed 100°C, exploding when disturbed, always stir before microwaving in the.",
+      "action": "studio_void: metal_cylinder@center_floor",
+      "poseA": "calm",
+      "poseB": "calm",
+      "lookA": "obj_mug",
+      "lookB": "obj_mug",
+      "holdA": null,
+      "holdB": null,
+      "focus": "both",
+      "shot": "wide",
+      "shotTarget": "both",
+      "shotTo": null,
+      "shotPart": "chest",
+      "shotWho": "A",
+      "ramp": false,
+      "motion": null,
+      "highlight": null,
+      "sfx": null,
+      "layout": {
+        "obj_mug": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "charLayout": {
+        "A": {
+          "visible": false
+        },
+        "B": {
+          "visible": false
+        }
+      },
+      "expect": {
+        "objects": [
+          "obj_mug"
+        ],
+        "chars": [],
+        "actions": [],
+        "dropped": []
+      },
+      "wall": "#d9dde0",
+      "floor": "#c4c9cd",
+      "place": "studio_void",
+      "camera": "CAM_WIDE_FRONT"
+    }
+  ]
+}
